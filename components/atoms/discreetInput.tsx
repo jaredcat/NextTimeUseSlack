@@ -1,8 +1,8 @@
-import {string, number, any, func, bool} from 'prop-types';
-import styled from '@emotion/styled'
+import { string, number, any, func, bool } from "prop-types";
+import styled from "@emotion/styled";
 
 const Input = styled.input`
-  width: ${({width}) => width}em;
+  width: ${({ width }) => width}em;
   background: none;
   border: none;
   color: white;
@@ -11,9 +11,9 @@ const Input = styled.input`
   font-size: 24px;
   text-align: center;
   &:focus {
-    outline:none;
+    outline: none;
   }
-  -moz-appearance:textfield;
+  -moz-appearance: textfield;
   &::-webkit-inner-spin-button,
   &::-webkit-outer-spin-button {
     -webkit-appearance: none;
@@ -23,8 +23,8 @@ const Input = styled.input`
 
 const stringToInt = (str: string, min: number = 0): number => {
   if (!str) str = `${min}`;
-  return parseInt(str.replaceAll(',', ''), 10);
-}
+  return parseInt(str.replaceAll(",", ""), 10);
+};
 
 const DiscreetInput = ({
   name,
@@ -33,7 +33,7 @@ const DiscreetInput = ({
   max,
   setValue,
   format,
-  stepSize
+  stepSize,
 }) => {
   const changeValue = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = e?.target?.value;
@@ -43,7 +43,7 @@ const DiscreetInput = ({
       if (intValue < min) intValue = min;
     }
     setValue(intValue);
-  }
+  };
 
   const onKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     let fakeTarget: HTMLInputElement;
@@ -58,44 +58,43 @@ const DiscreetInput = ({
       ...fakeEvent,
       target: {
         ...fakeTarget,
-        value: newValue
-      }
+        value: newValue,
+      },
     };
     changeValue(fakeEvent);
-  }
+  };
 
   let displayValue = value;
   if (format) {
-    displayValue = (stringToInt(value)).toLocaleString('en');
+    displayValue = stringToInt(value).toLocaleString("en");
   }
 
+  return (
+    <Input
+      type="string"
+      name={name}
+      value={displayValue}
+      width={Math.max(value.toString().length - 1, 1)}
+      onChange={changeValue}
+      onKeyDown={onKeyDown}
+    />
+  );
+};
 
-  return <Input
-    type="string"
-    name={name}
-    value={displayValue}
-    width={Math.max(value.toString().length - 1, 1)}
-    onChange={changeValue}
-    onKeyDown={onKeyDown}
-  />
-}
-
-
-DiscreetInput.propTypes = {
+(DiscreetInput.propTypes = {
   name: string.isRequired,
   value: string.isRequired,
   setValue: func.isRequired,
   min: number,
   max: number,
   format: bool,
-  stepSize: number
-},
-
-DiscreetInput.defaultProps = {
-  min: null,
-  max: null,
-  format: false,
-  stepSize: 1
-}
+  stepSize: number,
+}),
+  (DiscreetInput.defaultProps = {
+    min: null,
+    max: null,
+    format: false,
+    stepSize: 1,
+  });
 
 export default DiscreetInput;

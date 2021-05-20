@@ -1,5 +1,5 @@
-import { css, Global, keyframes } from '@emotion/react'
-import styled from '@emotion/styled'
+import { css, Global, keyframes } from "@emotion/react";
+import styled from "@emotion/styled";
 
 export const globalStyles = (
   <Global
@@ -9,7 +9,7 @@ export const globalStyles = (
         padding: 3rem 1rem;
         margin: 0;
         background: #374795;
-        color: #A5B4FF;
+        color: #a5b4ff;
         min-height: 100%;
         font-family: Oswald, Helvetica, Arial, sans-serif;
         font-weight: 400;
@@ -17,16 +17,16 @@ export const globalStyles = (
       }
     `}
   />
-)
+);
 
 export const InputText = styled.span`
-font-weight: 600;
+  font-weight: 600;
   color: white;
-`
+`;
 export const HighlightedText = styled.span`
   font-weight: 600;
   color: white;
-`
+`;
 
 export const basicStyles = css`
   background-color: white;
@@ -38,7 +38,7 @@ export const basicStyles = css`
   transition: all 0.1s linear;
   margin: 3rem 0;
   padding: 1rem 0.5rem;
-`
+`;
 
 export const hoverStyles = css`
   &:hover {
@@ -47,7 +47,7 @@ export const hoverStyles = css`
     border-color: aqua;
     box-shadow: -15px -15px 0 0 aqua, -30px -30px 0 0 cornflowerblue;
   }
-`
+`;
 export const bounce = keyframes`
   from {
     transform: scale(1.01);
@@ -55,11 +55,11 @@ export const bounce = keyframes`
   to {
     transform: scale(0.99);
   }
-`
+`;
 
 export const Basic = styled.div`
   ${basicStyles};
-`
+`;
 
 export const Combined = styled.div`
   ${basicStyles};
@@ -67,12 +67,12 @@ export const Combined = styled.div`
   & code {
     background-color: linen;
   }
-`
-export const Animated = styled("div")<{animation: string}>`
+`;
+export const Animated = styled("div")<{ animation: string }>`
   ${basicStyles};
   ${hoverStyles};
   & code {
     background-color: linen;
   }
-  animation: ${( props ) => props.animation} 0.2s infinite ease-in-out alternate;
-`
+  animation: ${(props) => props.animation} 0.2s infinite ease-in-out alternate;
+`;
