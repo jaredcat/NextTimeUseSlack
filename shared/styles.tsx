@@ -8,14 +8,25 @@ export const globalStyles = (
       body {
         padding: 3rem 1rem;
         margin: 0;
-        background: papayawhip;
+        background: #374795;
+        color: #A5B4FF;
         min-height: 100%;
-        font-family: Helvetica, Arial, sans-serif;
+        font-family: Oswald, Helvetica, Arial, sans-serif;
+        font-weight: 400;
         font-size: 24px;
       }
     `}
   />
 )
+
+export const InputText = styled.span`
+font-weight: 600;
+  color: white;
+`
+export const HighlightedText = styled.span`
+  font-weight: 600;
+  color: white;
+`
 
 export const basicStyles = css`
   background-color: white;
@@ -57,11 +68,11 @@ export const Combined = styled.div`
     background-color: linen;
   }
 `
-export const Animated = styled.div`
+export const Animated = styled("div")<{animation: string}>`
   ${basicStyles};
   ${hoverStyles};
   & code {
     background-color: linen;
   }
-  animation: ${({ animation }) => animation} 0.2s infinite ease-in-out alternate;
+  animation: ${( props ) => props.animation} 0.2s infinite ease-in-out alternate;
 `

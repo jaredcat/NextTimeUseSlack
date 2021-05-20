@@ -1,20 +1,27 @@
 {
-  "name": "with-emotion",
+  "name": "nexttimeuseslack",
   "version": "1.0.0",
   "scripts": {
     "dev": "next",
     "build": "next build",
     "start": "next start"
   },
-  "license": "MIT",
+  "license": "Apache 2.0",
+  "author": "Jared Kotoff",
   "devDependencies": {
-    "@emotion/babel-plugin": "11.0.0"
+    "@emotion/babel-plugin": "11.3.0",
+    "@types/node": "^15.3.1",
+    "@types/react": "^17.0.6",
+    "@types/react-dom": "^17.0.5",
+    "eslint": "^7.26.0",
+    "prettier": "^2.3.0",
+    "typescript": "^4.2.4"
   },
   "dependencies": {
-    "@emotion/react": "11.1.1",
-    "@emotion/styled": "11.0.0",
+    "@emotion/react": "11.4.0",
+    "@emotion/styled": "11.3.0",
     "next": "latest",
-    "react": "^17.0.1",
-    "react-dom": "^17.0.1"
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2"
   }
 }
