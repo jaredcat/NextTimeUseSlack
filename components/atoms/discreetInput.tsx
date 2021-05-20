@@ -1,7 +1,6 @@
 import { string, number, func, bool } from "prop-types";
 import styled from "@emotion/styled";
-import {sizes} from '@constants';
-
+import { sizes } from "@constants";
 
 const Input = styled.input`
   width: ${({ width }) => width}ch;
@@ -27,7 +26,7 @@ const Input = styled.input`
 `;
 
 const stringToInt = (str: string, min: number = 0): number => {
-  let intStr = str.replace(/[^0-9]/g, '');
+  let intStr = str.replace(/[^0-9]/g, "");
   if (!str) intStr = `${min}`;
   return parseInt(intStr, 10);
 };
@@ -106,13 +105,13 @@ DiscreetInput.propTypes = {
   prefix: string,
   postfix: string,
 };
-  DiscreetInput.defaultProps = {
-    min: null,
-    max: null,
-    format: false,
-    stepSize: 1,
-    prefix: "",
-    postfix: "",
-  };
+DiscreetInput.defaultProps = {
+  min: null,
+  max: null,
+  format: false,
+  stepSize: 1,
+  prefix: "",
+  postfix: "",
+};
 
 export default DiscreetInput;
