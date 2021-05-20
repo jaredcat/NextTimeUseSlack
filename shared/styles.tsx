@@ -1,19 +1,28 @@
 import { css, Global, keyframes } from "@emotion/react";
 import styled from "@emotion/styled";
+import {sizes} from '@constants';
 
 export const globalStyles = (
   <Global
     styles={css`
       html,
       body {
-        padding: 3rem 1rem;
         margin: 0;
+        padding: 0;
         background: #374795;
         color: #a5b4ff;
         min-height: 100%;
+        height: 100%;
         font-family: Oswald, Helvetica, Arial, sans-serif;
         font-weight: 400;
-        font-size: 24px;
+        font-size: 2em;
+        line-height: ${sizes.lineHeight};
+        vertical-align:middle;
+      }
+      body {
+        display: grid;
+        justify-content: center;
+        align-content: center;
       }
     `}
   />

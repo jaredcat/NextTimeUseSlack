@@ -1,6 +1,7 @@
-import { HighlightedText } from "../shared/styles";
 import { useState } from "react";
 import DiscreetInput from "@atoms/discreetInput";
+import { HighlightedText } from "../shared/styles";
+
 
 const MINS_A_YEAR = 525600;
 const usdFormatter = new Intl.NumberFormat("en-US", {
@@ -27,26 +28,27 @@ const Home = () => {
         value={people.toString()}
         setValue={setPeople}
       />{" "}
-      people at{" "}
+      people<br />at{" "}
       <DiscreetInput
         name="salary"
         min={0}
         max={10000000}
         stepSize={1000}
-        format={true}
+        format
         value={salary.toString()}
         setValue={setSalary}
+        prefix="$"
       />{" "}
-      a year for{" "}
+      a year<br />for
       <DiscreetInput
         name="mins"
         min={0}
         max={999}
         value={mins.toString()}
         setValue={setMins}
-      />{" "}
-      <HighlightedText>MINS</HighlightedText> BURNS{" "}
-      <HighlightedText>{burnTotalPretty}</HighlightedText> at{" "}
+        postfix=" MINS"
+      /><br />BURNS{" "}
+      <HighlightedText>{burnTotalPretty}</HighlightedText><br />at{" "}
       <HighlightedText>{burnMinPretty}</HighlightedText> a min
     </div>
   );

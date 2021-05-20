@@ -3,6 +3,17 @@ module.exports = {
     browser: true,
     es2021: true,
   },
+  settings: {
+    "import/resolver": {
+      alias: {
+        map: [
+          ["@atoms", "./components/atoms"],
+          ["@constants", "./constants"],
+        ],
+        extensions: [".ts", ".tsx", ".js", ".jsx", ".json"],
+      },
+    },
+  },
   extends: [
     "plugin:react/recommended",
     "airbnb",
@@ -18,5 +29,14 @@ module.exports = {
     sourceType: "module",
   },
   plugins: ["react", "@typescript-eslint"],
-  rules: {},
+  rules: {
+    "react/jsx-filename-extension": [
+      2,
+      { extensions: [".js", ".jsx", ".ts", ".tsx"] },
+    ],
+    "import/extensions": "off",
+  },
+  globals: {
+    React: "writable",
+  },
 };
