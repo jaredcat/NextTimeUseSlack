@@ -33,6 +33,7 @@ module.exports = {
     sourceType: "module",
   },
   plugins: ["react", "@typescript-eslint"],
+  ignorePatterns: ["docs/", ".vscode/"],
   rules: {
     "react/jsx-filename-extension": [
       2,
