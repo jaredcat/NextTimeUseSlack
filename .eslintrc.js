@@ -7,12 +7,12 @@ module.exports = {
     "import/resolver": {
       alias: {
         map: [
-          ["@atoms", "./components/atoms"],
-          ["@constants", "./constants"],
-          ["@molecules", "./components/molecules"],
-          ["@organisms", "./components/organisms"],
-          ["@shared", "./shared"],
-          ["@templates", "./components/templates"],
+          ["@atoms", "./src/components/atoms"],
+          ["@constants", "./src/constants"],
+          ["@molecules", "./src/components/molecules"],
+          ["@organisms", "./src/components/organisms"],
+          ["@shared", "./src/shared"],
+          ["@templates", "./src/components/templates"],
         ],
         extensions: [".ts", ".tsx", ".js", ".jsx", ".json"],
       },

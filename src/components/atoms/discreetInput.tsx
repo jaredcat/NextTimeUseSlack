@@ -1,15 +1,22 @@
 import { string, number, func, bool } from "prop-types";
 import styled from "@emotion/styled";
+import { css } from '@emotion/react'
 import { sizes } from "@constants";
 
+const dynamicStyle = ({width, fontSize}) =>
+  css`
+    font-size: ${fontSize};
+    width: ${width}ch;
+  `;
+
 const Input = styled.input`
-  width: ${({ width }) => width}ch;
+  ${dynamicStyle}
   background: none;
   border: none;
   color: white;
   font-family: Oswald, Helvetica, Arial, sans-serif;
   font-weight: 600;
-  font-size: 2rem;
+  font-size: ${sizes.fontSize};
   text-align: center;
   vertical-align: top;
   box-sizing: border-box;
@@ -26,8 +33,8 @@ const Input = styled.input`
 `;
 
 const stringToInt = (str: string, min: number = 0): number => {
-  let intStr = str.replace(/[^0-9]/g, "");
-  if (!intStr) intStr = `${min}`;
+  const intStr = str.replace(/[^0-9-]/g, "");
+  if (!intStr) return min;
   return parseInt(intStr, 10);
 };
 
@@ -41,6 +48,7 @@ const DiscreetInput = ({
   stepSize,
   prefix,
   postfix,
+  fontSize
 }) => {
   const changeValue = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = e?.target?.value;
@@ -90,6 +98,7 @@ const DiscreetInput = ({
       width={Math.max(displayValue.length, 1)}
       onChange={changeValue}
       onKeyDown={onKeyDown}
+      fontSize={fontSize}
     />
   );
 };
@@ -104,6 +113,7 @@ DiscreetInput.propTypes = {
   stepSize: number,
   prefix: string,
   postfix: string,
+  fontSize: string
 };
 DiscreetInput.defaultProps = {
   min: null,
@@ -112,6 +122,7 @@ DiscreetInput.defaultProps = {
   stepSize: 1,
   prefix: "",
   postfix: "",
+  fontSize: "1em"
 };
 
 export default DiscreetInput;

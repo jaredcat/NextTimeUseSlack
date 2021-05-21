@@ -25,7 +25,7 @@ const Main = ({ people, setPeople, salary, setSalary, mins, setMins }) => {
       />{" "}
       PEOPLE
       <br />
-      AT{" "}
+      AT
       <DiscreetInput
         name="salary"
         min={0}
@@ -35,18 +35,18 @@ const Main = ({ people, setPeople, salary, setSalary, mins, setMins }) => {
         value={salary.toString()}
         setValue={setSalary}
         prefix="$"
-      />{" "}
-      A YEAR
+      />A YEAR
       <br />
-      FOR
+      FOR A
       <DiscreetInput
         name="mins"
         min={0}
         max={999}
+        stepSize={5}
         value={mins.toString()}
         setValue={setMins}
-        postfix=" MINS"
-      />{" "}
+        postfix=" MIN"
+      />
       MEETING
       <br />
       BURNS <HighlightedText>{burnTotalPretty}</HighlightedText>

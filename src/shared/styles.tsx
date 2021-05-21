@@ -16,7 +16,7 @@ export const globalStyles = (
         font-family: Oswald, Helvetica, Arial, sans-serif;
         text-transform: uppercase;
         font-weight: 400;
-        font-size: 2em;
+        font-size: ${sizes.fontSize};
         line-height: ${sizes.lineHeight};
         vertical-align: middle;
       }
