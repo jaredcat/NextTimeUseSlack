@@ -4,14 +4,14 @@ import Main from "@templates";
 const Home = () => {
   const [people, setPeople] = useState(20);
   const [salary, setSalary] = useState(100000);
-  const [mins, setMins] = useState(0);
+  const [seconds, setSeconds] = useState(0);
 
   return (
     <Main
-      mins={mins}
+      seconds={seconds}
       people={people}
       salary={salary}
-      setMins={setMins}
+      setSeconds={setSeconds}
       setPeople={setPeople}
       setSalary={setSalary}
     />

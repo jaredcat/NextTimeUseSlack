@@ -1,9 +1,9 @@
 import { string, number, func, bool } from "prop-types";
 import styled from "@emotion/styled";
-import { css } from '@emotion/react'
+import { css } from "@emotion/react";
 import { sizes } from "@constants";
 
-const dynamicStyle = ({width, fontSize}) =>
+const dynamicStyle = ({ width, fontSize }) =>
   css`
     font-size: ${fontSize};
     width: ${width}ch;
@@ -48,7 +48,7 @@ const DiscreetInput = ({
   stepSize,
   prefix,
   postfix,
-  fontSize
+  fontSize,
 }) => {
   const changeValue = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = e?.target?.value;
@@ -113,7 +113,7 @@ DiscreetInput.propTypes = {
   stepSize: number,
   prefix: string,
   postfix: string,
-  fontSize: string
+  fontSize: string,
 };
 DiscreetInput.defaultProps = {
   min: null,
@@ -122,7 +122,7 @@ DiscreetInput.defaultProps = {
   stepSize: 1,
   prefix: "",
   postfix: "",
-  fontSize: "1em"
+  fontSize: "1em",
 };
 
 export default DiscreetInput;

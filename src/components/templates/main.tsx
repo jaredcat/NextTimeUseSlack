@@ -1,6 +1,6 @@
 import { number, func } from "prop-types";
 import DiscreetInput from "@atoms";
-import { HighlightedText } from "@shared/styles";
+import { Static } from "@organisms";
 import { MINS_A_YEAR } from "@constants";
 
 const usdFormatter = new Intl.NumberFormat("en-US", {
@@ -8,11 +8,16 @@ const usdFormatter = new Intl.NumberFormat("en-US", {
   currency: "USD",
 });
 
-const Main = ({ people, setPeople, salary, setSalary, mins, setMins }) => {
+const Main = ({ people, setPeople, salary, setSalary, seconds, setSeconds}) => {
+  const mins = Math.round(seconds/60);
   const burnMin = (salary * people) / MINS_A_YEAR;
-  const burnTotal = burnMin * mins;
+  const burnTotal = burnMin * seconds / 60;
   const burnMinPretty = usdFormatter.format(burnMin);
   const burnTotalPretty = usdFormatter.format(burnTotal);
+
+  const setMins = (newMins) => {
+    setSeconds(newMins*60);
+  }
 
   return (
     <div>
@@ -35,32 +40,19 @@ const Main = ({ people, setPeople, salary, setSalary, mins, setMins }) => {
         value={salary.toString()}
         setValue={setSalary}
         prefix="$"
-      />A YEAR
-      <br />
-      FOR A
-      <DiscreetInput
-        name="mins"
-        min={0}
-        max={999}
-        stepSize={5}
-        value={mins.toString()}
-        setValue={setMins}
-        postfix=" MIN"
       />
-      MEETING
+      A YEAR
       <br />
-      BURNS <HighlightedText>{burnTotalPretty}</HighlightedText>
-      <br />
-      AT <HighlightedText>{burnMinPretty}</HighlightedText> A MIN
+      <Static mins={mins} setMins={setMins} burnTotalPretty={burnTotalPretty} burnMinPretty={burnMinPretty}/>
     </div>
   );
 };
 
 Main.propTypes = {
-  mins: number.isRequired,
+  seconds: number.isRequired,
   people: number.isRequired,
   salary: number.isRequired,
-  setMins: func.isRequired,
+  setSeconds: func.isRequired,
   setPeople: func.isRequired,
   setSalary: func.isRequired,
 };
