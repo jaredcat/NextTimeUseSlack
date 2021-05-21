@@ -11,7 +11,7 @@ const Timer = ({ burnRate, seconds, setSeconds }) => {
     return () => {
       clearInterval(id);
     };
-  }, []);
+  }, [setSeconds]);
 
   return <>{total}</>;
 };

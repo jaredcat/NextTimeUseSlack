@@ -1,1 +1,1 @@
-export { default } from "./discreetInput";
+export { default } from "./DiscreetInput";

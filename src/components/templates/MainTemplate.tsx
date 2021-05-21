@@ -8,7 +8,7 @@ const usdFormatter = new Intl.NumberFormat("en-US", {
   currency: "USD",
 });
 
-const Main = ({ people, setPeople, salary, setSalary, seconds, setSeconds}) => {
+const MainTemplate = ({ people, setPeople, salary, setSalary, seconds, setSeconds}) => {
   const mins = Math.round(seconds/60);
   const burnMin = (salary * people) / MINS_A_YEAR;
   const burnTotal = burnMin * seconds / 60;
@@ -48,7 +48,7 @@ const Main = ({ people, setPeople, salary, setSalary, seconds, setSeconds}) => {
   );
 };
 
-Main.propTypes = {
+MainTemplate.propTypes = {
   seconds: number.isRequired,
   people: number.isRequired,
   salary: number.isRequired,
@@ -57,4 +57,4 @@ Main.propTypes = {
   setSalary: func.isRequired,
 };
 
-export default Main;
+export default MainTemplate;

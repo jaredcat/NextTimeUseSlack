@@ -1,5 +1,5 @@
 import { useState } from "react";
-import Main from "@templates";
+import MainTemplate from "@templates";
 
 const Home = () => {
   const [people, setPeople] = useState(20);
@@ -7,7 +7,7 @@ const Home = () => {
   const [seconds, setSeconds] = useState(0);
 
   return (
-    <Main
+    <MainTemplate
       seconds={seconds}
       people={people}
       salary={salary}
