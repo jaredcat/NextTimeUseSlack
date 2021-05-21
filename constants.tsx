@@ -1,4 +1,5 @@
-/* eslint-disable import/prefer-default-export */
 export const sizes = {
-  lineHeight: '80px'
-}
+  lineHeight: "80px",
+};
+
+export const MINS_A_YEAR = 525600;

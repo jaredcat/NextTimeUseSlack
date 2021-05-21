@@ -9,6 +9,10 @@ module.exports = {
         map: [
           ["@atoms", "./components/atoms"],
           ["@constants", "./constants"],
+          ["@molecules", "./components/molecules"],
+          ["@organisms", "./components/organisms"],
+          ["@shared", "./shared"],
+          ["@templates", "./components/templates"],
         ],
         extensions: [".ts", ".tsx", ".js", ".jsx", ".json"],
       },

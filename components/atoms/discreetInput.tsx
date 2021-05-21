@@ -11,7 +11,7 @@ const Input = styled.input`
   font-weight: 600;
   font-size: 2rem;
   text-align: center;
-  vertical-align: middle;
+  vertical-align: top;
   box-sizing: border-box;
   line-height: ${sizes.lineHeight};
   &:focus {
@@ -27,7 +27,7 @@ const Input = styled.input`
 
 const stringToInt = (str: string, min: number = 0): number => {
   let intStr = str.replace(/[^0-9]/g, "");
-  if (!str) intStr = `${min}`;
+  if (!intStr) intStr = `${min}`;
   return parseInt(intStr, 10);
 };
 

@@ -1,6 +1,6 @@
 import { css, Global, keyframes } from "@emotion/react";
 import styled from "@emotion/styled";
-import {sizes} from '@constants';
+import { sizes } from "@constants";
 
 export const globalStyles = (
   <Global
@@ -14,10 +14,11 @@ export const globalStyles = (
         min-height: 100%;
         height: 100%;
         font-family: Oswald, Helvetica, Arial, sans-serif;
+        text-transform: uppercase;
         font-weight: 400;
         font-size: 2em;
         line-height: ${sizes.lineHeight};
-        vertical-align:middle;
+        vertical-align: middle;
       }
       body {
         display: grid;
