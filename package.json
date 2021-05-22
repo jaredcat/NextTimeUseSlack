@@ -5,11 +5,11 @@
     "dev": "next",
     "build": "next build",
     "start": "next start",
-    "export": "rm -rf .next docs && npm run build && next export -o docs/ && touch docs/.nojekyll && touch docs/CNAME && echo nexttimeuseslack.com>> docs/CNAME",
+    "export": "npm run build && next export -o build/ && touch build/.nojekyll && touch build/CNAME && echo nexttimeuseslack.com>> build/CNAME",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix"
   },
-  "license": "Apache 2.0",
+  "license": "Apache-2.0",
   "author": "Jared Kotoff",
   "devDependencies": {
     "@emotion/babel-plugin": "11.3.0",

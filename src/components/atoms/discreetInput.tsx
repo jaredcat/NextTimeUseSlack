@@ -37,7 +37,7 @@ const stringToInt = (str: string, min = 0): number => {
   return parseInt(intStr, 10);
 };
 
-interface DiscreetInput {
+interface DiscreetInputProps {
   name: string;
   value: string;
   min?: number;
@@ -61,7 +61,7 @@ const DiscreetInput = ({
   prefix,
   postfix,
   fontSize,
-}: DiscreetInput): React.ReactElement => {
+}: DiscreetInputProps): React.ReactElement => {
   const changeValue = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = e?.target?.value;
     let intValue = stringToInt(newValue, min);
