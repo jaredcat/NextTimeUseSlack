@@ -1,7 +1,7 @@
 import { string, number, func, bool } from "prop-types";
 import styled from "@emotion/styled";
 import { css } from "@emotion/react";
-import { sizes } from "@constants";
+import { sizes, colors } from "@constants";
 
 const dynamicStyle = ({ width, fontSize }) =>
   css`
@@ -13,14 +13,13 @@ const Input = styled.input`
   ${dynamicStyle}
   background: none;
   border: none;
-  color: white;
+  color: ${colors.highlighted};
   font-family: Oswald, Helvetica, Arial, sans-serif;
   font-weight: 600;
   font-size: ${sizes.fontSize};
   text-align: center;
-  vertical-align: top;
   box-sizing: border-box;
-  line-height: ${sizes.lineHeight};
+  line-height: ${Number(sizes.fontSize.match(/\d+/)[0])*33}px;
   &:focus {
     outline: none;
   }
@@ -32,11 +31,24 @@ const Input = styled.input`
   }
 `;
 
-const stringToInt = (str: string, min: number = 0): number => {
+const stringToInt = (str: string, min = 0): number => {
   const intStr = str.replace(/[^0-9-]/g, "");
   if (!intStr) return min;
   return parseInt(intStr, 10);
 };
+
+interface DiscreetInput {
+  name: string;
+  value: string;
+  min?: number;
+  max?: number;
+  setValue(intValue: number): void;
+  format?: boolean;
+  stepSize?: number;
+  prefix?: string;
+  postfix?: string;
+  fontSize?: string;
+}
 
 const DiscreetInput = ({
   name,
@@ -49,7 +61,7 @@ const DiscreetInput = ({
   prefix,
   postfix,
   fontSize,
-}) => {
+}: DiscreetInput): React.ReactElement => {
   const changeValue = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = e?.target?.value;
     let intValue = stringToInt(newValue, min);

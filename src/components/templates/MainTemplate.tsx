@@ -1,22 +1,50 @@
+import { ReactElement, useState } from "react";
 import { number, func } from "prop-types";
-import DiscreetInput from "@atoms";
-import { Static } from "@organisms";
-import { MINS_A_YEAR } from "@constants";
+import {DiscreetInput} from "@atoms";
+import { Static, Timer } from "@organisms";
+import { MINS_A_YEAR, MODES, usdFormatter } from "@constants";
 
-const usdFormatter = new Intl.NumberFormat("en-US", {
-  style: "currency",
-  currency: "USD",
-});
+interface MainProps {
+  people: number;
+  setPeople(people: number): void;
+  salary: number;
+  setSalary(salary: number): void;
+  seconds: number;
+  setSeconds(seconds: number): void;
+}
 
-const MainTemplate = ({ people, setPeople, salary, setSalary, seconds, setSeconds}) => {
-  const mins = Math.round(seconds/60);
+const MainTemplate = ({
+  people,
+  setPeople,
+  salary,
+  setSalary,
+  seconds,
+  setSeconds,
+}: MainProps): ReactElement => {
+  const [mode, setMode] = useState(MODES.STATIC);
+  const mins = Math.round(seconds / 60);
   const burnMin = (salary * people) / MINS_A_YEAR;
-  const burnTotal = burnMin * seconds / 60;
+  const burnTotal = (burnMin * seconds) / 60;
   const burnMinPretty = usdFormatter.format(burnMin);
   const burnTotalPretty = usdFormatter.format(burnTotal);
 
   const setMins = (newMins) => {
-    setSeconds(newMins*60);
+    setSeconds(newMins * 60);
+  };
+
+  let body = <></>;
+  if (mode === MODES.STATIC) {
+    body = (
+      <Static
+        mins={mins}
+        setMins={setMins}
+        burnTotalPretty={burnTotalPretty}
+        burnMinPretty={burnMinPretty}
+        setMode={setMode}
+      />
+    );
+  } else if (mode === MODES.TIMER) {
+    body = <Timer burnMin={burnMin} seconds={seconds} setSeconds={setSeconds} />;
   }
 
   return (
@@ -43,7 +71,7 @@ const MainTemplate = ({ people, setPeople, salary, setSalary, seconds, setSecond
       />
       A YEAR
       <br />
-      <Static mins={mins} setMins={setMins} burnTotalPretty={burnTotalPretty} burnMinPretty={burnMinPretty}/>
+      {body}
     </div>
   );
 };
