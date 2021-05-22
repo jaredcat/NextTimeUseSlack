@@ -1,1 +1,1 @@
-export { default } from "./TextRow";
+export {}

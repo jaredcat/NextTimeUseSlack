@@ -1,8 +1,8 @@
 import { ReactElement, useState } from "react";
 import { number, func } from "prop-types";
-import {DiscreetInput} from "@atoms";
 import { Static, Timer } from "@organisms";
 import { MINS_A_YEAR, MODES, usdFormatter } from "@constants";
+import { DiscreetInput } from "@atoms";
 
 interface MainProps {
   people: number;
@@ -10,7 +10,7 @@ interface MainProps {
   salary: number;
   setSalary(salary: number): void;
   seconds: number;
-  setSeconds(seconds: number): void;
+  setSeconds(seconds: number | ((prevSeconds: number) => number)): void;
 }
 
 const MainTemplate = ({
@@ -44,7 +44,9 @@ const MainTemplate = ({
       />
     );
   } else if (mode === MODES.TIMER) {
-    body = <Timer burnMin={burnMin} seconds={seconds} setSeconds={setSeconds} />;
+    body = (
+      <Timer burnMin={burnMin} seconds={seconds} setSeconds={setSeconds} />
+    );
   }
 
   return (

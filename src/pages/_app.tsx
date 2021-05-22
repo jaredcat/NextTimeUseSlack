@@ -3,7 +3,9 @@
 import { AppProps } from "next/app";
 import { globalStyles } from "../shared/styles";
 
-const App = ({ Component, pageProps }: AppProps) => (
+
+
+const App = ({ Component, pageProps }: AppProps):React.ReactElement => (
   <>
     {globalStyles}
     <Component {...pageProps} />

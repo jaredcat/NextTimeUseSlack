@@ -3,23 +3,20 @@ import { number, func } from "prop-types";
 import { usdFormatter } from "@constants";
 import { HighlightedText } from "@shared/styles";
 
-type updateSeconds = (prevSeconds: number) => number;
 interface TimerProps {
   burnMin: number;
   seconds: number;
-  setSeconds(updateSeconds): void;
+  setSeconds(seconds: (prevSeconds: number) => number): void;
 }
 
-
-const formatSecsToMins = (seconds:number): string => {
-  return new Date(seconds * 1000).toISOString().substr(11, 8)
-}
+const formatSecsToMins = (seconds: number): string =>
+  new Date(seconds * 1000).toISOString().substr(11, 8);
 
 const Timer = ({ burnMin, seconds, setSeconds }: TimerProps): ReactElement => {
   const burnRateSec = useRef(burnMin / 60);
   const [total, setTotal] = useState(burnRateSec.current * seconds || 0);
 
-  const burnMinPretty = usdFormatter.format(burnMin)
+  const burnMinPretty = usdFormatter.format(burnMin);
 
   useEffect(() => {
     burnRateSec.current = burnMin / 60;
@@ -27,7 +24,7 @@ const Timer = ({ burnMin, seconds, setSeconds }: TimerProps): ReactElement => {
 
   useEffect(() => {
     const timer = setInterval(() => {
-      setSeconds((prevSeconds) => prevSeconds + 1);
+      setSeconds((prevSeconds: number) => prevSeconds + 1);
       setTotal((prevTotal) => prevTotal + burnRateSec.current);
     }, 1000);
     return () => {
@@ -41,7 +38,9 @@ const Timer = ({ burnMin, seconds, setSeconds }: TimerProps): ReactElement => {
       <br />
       FOR <HighlightedText>{formatSecsToMins(seconds)}</HighlightedText>
       <br />
-      <HighlightedText fontSize="4rem">{usdFormatter.format(total)}</HighlightedText>
+      <HighlightedText fontSize="4rem">
+        {usdFormatter.format(total)}
+      </HighlightedText>
       <br />
       HAS BEEN BURNT
     </>

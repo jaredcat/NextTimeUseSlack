@@ -5,7 +5,7 @@
     "dev": "next",
     "build": "next build",
     "start": "next start",
-    "export": "npm run build && next export -o build/ && touch build/.nojekyll && touch build/CNAME && echo nexttimeuseslack.com>> build/CNAME",
+    "export": "yarn run build && next export -o build/ && touch build/.nojekyll && touch build/CNAME && echo nexttimeuseslack.com>> build/CNAME",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix"
   },

@@ -19,7 +19,7 @@ const Input = styled.input`
   font-size: ${sizes.fontSize};
   text-align: center;
   box-sizing: border-box;
-  line-height: ${Number(sizes.fontSize.match(/\d+/)[0])*33}px;
+  line-height: ${Number(sizes.fontSize.match(/\d+/)[0]) * 33}px;
   &:focus {
     outline: none;
   }
@@ -38,29 +38,29 @@ const stringToInt = (str: string, min = 0): number => {
 };
 
 interface DiscreetInputProps {
-  name: string;
-  value: string;
-  min?: number;
-  max?: number;
-  setValue(intValue: number): void;
-  format?: boolean;
-  stepSize?: number;
-  prefix?: string;
-  postfix?: string;
   fontSize?: string;
+  format?: boolean;
+  max?: number;
+  min?: number;
+  name: string;
+  postfix?: string;
+  prefix?: string;
+  setValue(intValue: number): void;
+  stepSize?: number;
+  value: string;
 }
 
 const DiscreetInput = ({
-  name,
-  value,
-  min,
-  max,
-  setValue,
-  format,
-  stepSize,
-  prefix,
-  postfix,
   fontSize,
+  format,
+  max,
+  min,
+  name,
+  postfix,
+  prefix,
+  setValue,
+  stepSize,
+  value,
 }: DiscreetInputProps): React.ReactElement => {
   const changeValue = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = e?.target?.value;
@@ -116,25 +116,25 @@ const DiscreetInput = ({
 };
 
 DiscreetInput.propTypes = {
-  name: string.isRequired,
-  value: string.isRequired,
-  setValue: func.isRequired,
-  min: number,
-  max: number,
-  format: bool,
-  stepSize: number,
-  prefix: string,
-  postfix: string,
   fontSize: string,
+  format: bool,
+  max: number,
+  min: number,
+  name: string.isRequired,
+  postfix: string,
+  prefix: string,
+  setValue: func.isRequired,
+  stepSize: number,
+  value: string.isRequired,
 };
 DiscreetInput.defaultProps = {
-  min: null,
-  max: null,
-  format: false,
-  stepSize: 1,
-  prefix: "",
-  postfix: "",
   fontSize: "1em",
+  format: false,
+  max: null,
+  min: null,
+  postfix: "",
+  prefix: "",
+  stepSize: 1,
 };
 
 export default DiscreetInput;

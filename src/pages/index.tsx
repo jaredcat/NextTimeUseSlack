@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { useState , ReactElement} from "react";
 import MainTemplate from "@templates";
 
-const Home = () => {
+const Home = (): ReactElement => {
   const [people, setPeople] = useState(20);
   const [salary, setSalary] = useState(100000);
   const [seconds, setSeconds] = useState(0);
