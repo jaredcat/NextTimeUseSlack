@@ -1,6 +1,6 @@
 import { css, Global } from "@emotion/react";
 import styled from "@emotion/styled";
-import { sizes , colors} from "@constants";
+import { sizes, colors } from "@constants";
 
 export const globalStyles = (
   <Global
@@ -19,6 +19,10 @@ export const globalStyles = (
         font-size: ${sizes.fontSize};
         line-height: ${sizes.fontSize};
         vertical-align: middle;
+        @media (max-width: ${sizes.small.mediaQuery}) {
+          font-size: ${sizes.small.fontSize};
+          line-height: ${sizes.small.lineHeight};
+        }
       }
       body {
         display: grid;
@@ -36,7 +40,8 @@ export const InputText = styled.span`
 export const HighlightedText = styled.span`
   font-weight: 600;
   color: ${colors.highlighted};
-  ${({fontSize}:{fontSize?: string}) => fontSize ? `font-size: ${fontSize};line-height:${fontSize};`: null}
+  ${({ fontSize }: { fontSize?: string }) =>
+    fontSize ? `font-size: ${fontSize};line-height:${fontSize};` : null}
 `;
 
 // export const basicStyles = css`

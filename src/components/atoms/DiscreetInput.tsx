@@ -29,6 +29,11 @@ const Input = styled.input`
     -webkit-appearance: none;
     margin: 0;
   }
+  @media (max-width: ${sizes.small.mediaQuery}) {
+    font-size: ${sizes.small.fontSize};
+    height: ${Number(sizes.small.fontSize.match(/[\d+.]/g).join("")) *
+    23.334}px;
+  }
 `;
 
 const stringToInt = (str: string, min = 0): number => {

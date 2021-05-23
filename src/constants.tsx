@@ -9,6 +9,12 @@ export const sizes = {
   lineHeight: "2rem",
   fontSize: "2rem",
   buttonFontSize: "1rem",
+  small: {
+    mediaQuery: "550px",
+    lineHeight: "1.5rem",
+    fontSize: "1.5rem",
+    buttonFontSize: "0.8rem",
+  },
 };
 
 export const MINS_A_YEAR = 525600;
