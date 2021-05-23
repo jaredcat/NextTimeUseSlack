@@ -1,6 +1,6 @@
-import {ReactElement} from 'react'
+import { ReactElement } from "react";
 import { number, func, string } from "prop-types";
-import {DiscreetInput, TextButton} from "@atoms";
+import { DiscreetInput, TextButton } from "@atoms";
 import { HighlightedText } from "@shared/styles";
 import { MODES, sizes } from "@constants";
 import styled from "@emotion/styled";
@@ -9,16 +9,22 @@ interface StaticProps {
   mins: number;
   setMins(mins: number): void;
   burnTotalPretty: string;
-  burnMinPretty: string
+  burnMinPretty: string;
   setMode(mode: string): void;
 }
 
 const LargeText = styled.span`
-font-size: 3rem;
-line-height: 3rem;
-`
+  font-size: 3rem;
+  line-height: 3rem;
+`;
 
-const Static = ({ mins, setMins, burnTotalPretty, burnMinPretty, setMode }: StaticProps): ReactElement => (
+const Static = ({
+  mins,
+  setMins,
+  burnTotalPretty,
+  burnMinPretty,
+  setMode,
+}: StaticProps): ReactElement => (
   <>
     FOR A
     <DiscreetInput
@@ -32,7 +38,9 @@ const Static = ({ mins, setMins, burnTotalPretty, burnMinPretty, setMode }: Stat
     />
     MEETING
     <br />
-    <LargeText>BURNS <HighlightedText>{burnTotalPretty}</HighlightedText></LargeText>
+    <LargeText>
+      BURNS <HighlightedText>{burnTotalPretty}</HighlightedText>
+    </LargeText>
     <br />
     AT <HighlightedText>{burnMinPretty}</HighlightedText> A MIN
     <br />

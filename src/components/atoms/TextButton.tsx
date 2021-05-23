@@ -8,7 +8,8 @@ const Button = styled.button`
   color: ${colors.highlighted};
   cursor: pointer;
   display: inline-block;
-  font-size: ${({fontSize}:{fontSize: string}) => fontSize || sizes.fontSize};
+  font-size: ${({ fontSize }: { fontSize: string }) =>
+    fontSize || sizes.fontSize};
 `;
 
 interface TextButtonProps {
@@ -36,7 +37,7 @@ TextButton.propTypes = {
   onClick: func.isRequired,
 };
 TextButton.defaultProps = {
-    fontSize: null
-}
+  fontSize: null,
+};
 
 export default TextButton;

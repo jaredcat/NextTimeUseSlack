@@ -1,10 +1,12 @@
-import { ReactElement, useState } from "react";
-import { number, func } from "prop-types";
+import { ReactElement } from "react";
+import { number, func, string } from "prop-types";
 import { Static, Timer } from "@organisms";
 import { MINS_A_YEAR, MODES, usdFormatter } from "@constants";
 import { DiscreetInput } from "@atoms";
 
 interface MainProps {
+  mode: string;
+  setMode(mode: MODES): void;
   people: number;
   setPeople(people: number): void;
   salary: number;
@@ -14,21 +16,22 @@ interface MainProps {
 }
 
 const MainTemplate = ({
+  mode,
   people,
-  setPeople,
   salary,
-  setSalary,
   seconds,
+  setMode,
+  setPeople,
+  setSalary,
   setSeconds,
 }: MainProps): ReactElement => {
-  const [mode, setMode] = useState(MODES.STATIC);
   const mins = Math.round(seconds / 60);
   const burnMin = (salary * people) / MINS_A_YEAR;
   const burnTotal = (burnMin * seconds) / 60;
   const burnMinPretty = usdFormatter.format(burnMin);
   const burnTotalPretty = usdFormatter.format(burnTotal);
 
-  const setMins = (newMins) => {
+  const setMins = (newMins: number) => {
     setSeconds(newMins * 60);
   };
 
@@ -79,12 +82,18 @@ const MainTemplate = ({
 };
 
 MainTemplate.propTypes = {
-  seconds: number.isRequired,
+  mode: string,
   people: number.isRequired,
   salary: number.isRequired,
-  setSeconds: func.isRequired,
+  seconds: number.isRequired,
+  setMode: func.isRequired,
   setPeople: func.isRequired,
   setSalary: func.isRequired,
+  setSeconds: func.isRequired,
+};
+
+MainTemplate.defaultProps = {
+  mode: MODES.STATIC,
 };
 
 export default MainTemplate;
