@@ -19,7 +19,7 @@ const Input = styled.input`
   font-size: ${sizes.fontSize};
   text-align: center;
   box-sizing: border-box;
-  line-height: ${Number(sizes.fontSize.match(/\d+/)[0]) * 33}px;
+  height: ${Number(sizes.fontSize.match(/\d+/)[0]) * 33}px;
   &:focus {
     outline: none;
   }
