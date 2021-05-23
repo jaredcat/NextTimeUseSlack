@@ -48,7 +48,12 @@ const MainTemplate = ({
     );
   } else if (mode === MODES.TIMER) {
     body = (
-      <Timer burnMin={burnMin} seconds={seconds} setSeconds={setSeconds} />
+      <Timer
+        burnMin={burnMin}
+        seconds={seconds}
+        setSeconds={setSeconds}
+        setMode={setMode}
+      />
     );
   }
 
