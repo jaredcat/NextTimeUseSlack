@@ -34,7 +34,7 @@ const Timer = ({ burnMin, seconds, setSeconds }: TimerProps): ReactElement => {
 
   return (
     <>
-      BURNING AT <HighlightedText>{burnMinPretty}</HighlightedText>
+      BURNS AT <HighlightedText>{burnMinPretty}</HighlightedText>
       <br />
       FOR <HighlightedText>{formatSecsToMins(seconds)}</HighlightedText>
       <br />
