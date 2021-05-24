@@ -15,6 +15,7 @@ const Home = (): ReactElement => {
   const [seconds, setSeconds] = useState<number>(0);
   const [mode, setMode] = useState<MODES>(MODES.STATIC);
 
+  // Gets initial state from url params and setups popstate event listener
   useEffect(() => {
     const {
       [PARAM_STRINGS.PEOPLE]: initPeople,
@@ -37,6 +38,7 @@ const Home = (): ReactElement => {
     return () => window.removeEventListener("popstate", popState);
   }, []);
 
+  // Updates the url params to current state
   useEffect(() => {
     const currentState = {
       [PARAM_STRINGS.PEOPLE]: people,

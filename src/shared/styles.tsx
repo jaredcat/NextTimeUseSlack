@@ -28,6 +28,9 @@ export const globalStyles = (
         display: grid;
         justify-content: center;
         align-content: center;
+        @media (max-width: ${sizes.small.mediaQuery}) {
+          justify-content: revert;
+        }
       }
     `}
   />
