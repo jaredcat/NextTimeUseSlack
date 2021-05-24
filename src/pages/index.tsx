@@ -61,6 +61,12 @@ const Home = (): ReactElement => {
     prevState.current = currentState;
   }, [people, salary, seconds, mode]);
 
+  const resetState = () => {
+    setPeople(0);
+    setSalary(0);
+    setSeconds(0);
+  }
+
   return (
     <MainTemplate
       mode={mode}
@@ -71,6 +77,7 @@ const Home = (): ReactElement => {
       setPeople={setPeople}
       setSalary={setSalary}
       setSeconds={setSeconds}
+      resetState={resetState}
     />
   );
 };
