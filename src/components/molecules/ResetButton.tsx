@@ -4,20 +4,6 @@ import styled from "@emotion/styled";
 import { colors } from "@constants";
 import { useSpring, animated as a } from "react-spring";
 
-// const spin = css`
-//   animation-name: spin;
-//   animation-duration: 500ms;
-//   animation-iteration-count: 1;
-//   animation-timing-function: ease;
-//   @keyframes spin {
-//     from {
-//       transform:rotate(0deg);
-//     }
-//     to {
-//       transform:rotate(360deg);
-//   }
-// `;
-
 const Button = styled(a.button)`
   background: rgba(255, 255, 255, 0.2);
   border-radius: 30px;
@@ -60,7 +46,12 @@ const ResetButton = ({
   };
 
   return (
-    <Button style={contentProps} type="button" onClick={handleOnClick} title="Clear all input">
+    <Button
+      style={contentProps}
+      type="button"
+      onClick={handleOnClick}
+      title="Clear all input"
+    >
       &times;
     </Button>
   );

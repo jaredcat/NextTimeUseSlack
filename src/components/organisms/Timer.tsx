@@ -41,7 +41,7 @@ const Timer = ({
 
   return (
     <>
-      BURNING AT <HighlightedText>{burnMinPretty}</HighlightedText>
+      BURNS AT <HighlightedText>{burnMinPretty}</HighlightedText> A MIN
       <br />
       FOR <HighlightedText>{formatSecsToMins(seconds)}</HighlightedText>
       <br />
