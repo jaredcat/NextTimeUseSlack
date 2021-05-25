@@ -17,7 +17,7 @@ export const sizes = {
   },
 };
 
-export const MINS_A_YEAR = 525600;
+export const MINS_A_YEAR = 125220; // 2087 annual working hours
 
 export enum MODES {
   STATIC = "static",
