@@ -3,6 +3,7 @@ import { number, func, string } from "prop-types";
 import { Static, Timer } from "@organisms";
 import { MINS_A_YEAR, MODES, usdFormatter } from "@constants";
 import { DiscreetInput } from "@atoms";
+import ResetButton  from "@molecules";
 
 interface MainProps {
   mode: string;
@@ -13,6 +14,7 @@ interface MainProps {
   setSalary(salary: number): void;
   seconds: number;
   setSeconds(seconds: number | ((prevSeconds: number) => number)): void;
+  resetState(): void;
 }
 
 const MainTemplate = ({
@@ -24,6 +26,7 @@ const MainTemplate = ({
   setPeople,
   setSalary,
   setSeconds,
+  resetState,
 }: MainProps): ReactElement => {
   const mins = Math.round(seconds / 60);
   const burnMin = (salary * people) / MINS_A_YEAR;
@@ -59,6 +62,7 @@ const MainTemplate = ({
 
   return (
     <div>
+      <ResetButton resetState={resetState} />
       <DiscreetInput
         name="people"
         min={0}
@@ -95,6 +99,7 @@ MainTemplate.propTypes = {
   setPeople: func.isRequired,
   setSalary: func.isRequired,
   setSeconds: func.isRequired,
+  resetState: func.isRequired,
 };
 
 MainTemplate.defaultProps = {
