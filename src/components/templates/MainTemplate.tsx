@@ -3,7 +3,7 @@ import { number, func, string } from "prop-types";
 import { Static, Timer } from "@organisms";
 import { MINS_A_YEAR, MODES, usdFormatter } from "@constants";
 import { DiscreetInput } from "@atoms";
-import ResetButton  from "@molecules";
+import ResetButton from "@molecules";
 
 interface MainProps {
   mode: string;

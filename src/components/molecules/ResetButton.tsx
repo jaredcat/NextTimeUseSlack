@@ -23,7 +23,6 @@ const Button = styled(a.button)`
   &:hover {
     background: rgba(255, 255, 255, 0.4);
   }
-}
 `;
 const ResetButton = ({
   resetState,
