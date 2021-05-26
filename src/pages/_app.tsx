@@ -57,11 +57,7 @@ const App = ({ Component, pageProps }: AppProps): React.ReactElement => (
         content={twitterHandle}
         key="twittercreator"
       />
-      <meta
-        name="twitter:image"
-        content={previewImage}
-        key="twitterimage"
-      />
+      <meta name="twitter:image" content={previewImage} key="twitterimage" />
     </Head>
     {globalStyles}
     <Component {...pageProps} />
