@@ -15,16 +15,6 @@ const fbAdminId = "578412433";
 const App = ({ Component, pageProps }: AppProps): React.ReactElement => (
   <>
     <Head>
-      <link
-        rel="preconnect"
-        href="https://fonts.gstatic.com"
-        crossOrigin="true"
-      />
-      <link
-        rel="stylesheet"
-        href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;600&display=swap"
-      />
-
       <title>{title}</title>
       <meta httpEquiv="Content-Type" content="text/html; charset=utf-8" />
       <meta name="viewport" content="width=device-width, initial-scale=1" />

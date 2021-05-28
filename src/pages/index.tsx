@@ -12,7 +12,7 @@ const Home = (): ReactElement => {
   const prevState = useRef<State>({});
   const [people, setPeople] = useState<number>(20);
   const [salary, setSalary] = useState<number>(100000);
-  const [seconds, setSeconds] = useState<number>(0);
+  const [seconds, setSeconds] = useState<number>(1800);
   const [mode, setMode] = useState<MODES>(MODES.STATIC);
 
   // Gets initial state from url params and setups popstate event listener
@@ -25,7 +25,7 @@ const Home = (): ReactElement => {
     }: State = getStateFromParams();
     setPeople(initPeople || 20);
     setSalary(initSalary || 100000);
-    setSeconds(initSeconds || 0);
+    setSeconds(initSeconds || 1800);
     setMode(initMode || MODES.STATIC);
 
     const popState = () => {
@@ -65,7 +65,7 @@ const Home = (): ReactElement => {
     setPeople(0);
     setSalary(0);
     setSeconds(0);
-  }
+  };
 
   return (
     <MainTemplate

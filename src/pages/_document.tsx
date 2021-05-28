@@ -21,6 +21,15 @@ class MyDocument extends Document {
     return (
       <Html>
         <Head>
+          <link
+            rel="preconnect"
+            href="https://fonts.gstatic.com"
+            crossOrigin="true"
+          />
+          <link
+            rel="stylesheet"
+            href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;600&display=swap"
+          />
           {/* Global Site Tag (gtag.js) - Google Analytics */}
           <script
             async

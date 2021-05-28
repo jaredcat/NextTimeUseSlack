@@ -30,7 +30,7 @@ const Static = ({
     <DiscreetInput
       name="mins"
       min={0}
-      max={999}
+      max={1000}
       stepSize={5}
       value={mins.toString()}
       setValue={setMins}
