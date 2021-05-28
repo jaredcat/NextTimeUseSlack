@@ -72,7 +72,7 @@ const MainTemplate = ({
         <TextRow>
           <DiscreetInput
             name="people"
-            min={1}
+            min={0}
             max={100000}
             value={people.toString()}
             setValue={setPeople}
@@ -83,7 +83,7 @@ const MainTemplate = ({
           AT
           <DiscreetInput
             name="salary"
-            min={1}
+            min={0}
             max={10000000}
             stepSize={1000}
             format
