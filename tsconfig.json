@@ -4,6 +4,7 @@
     "paths": {
       "@atoms": ["src/components/atoms"],
       "@constants": ["src/constants.tsx"],
+      "@hooks": ["src/hooks"],
       "@molecules": ["src/components/molecules"],
       "@organisms": ["src/components/organisms"],
       "@shared/*": ["src/shared/*"],

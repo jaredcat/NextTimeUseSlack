@@ -10,6 +10,7 @@ import { MODES } from "@constants";
 
 const Home = (): ReactElement => {
   const prevState = useRef<State>({});
+  const [isLoaded, setIsLoaded] = useState<boolean>(false);
   const [people, setPeople] = useState<number>(20);
   const [salary, setSalary] = useState<number>(100000);
   const [seconds, setSeconds] = useState<number>(1800);
@@ -27,6 +28,7 @@ const Home = (): ReactElement => {
     setSalary(initSalary || 100000);
     setSeconds(initSeconds || 1800);
     setMode(initMode || MODES.STATIC);
+    setIsLoaded(true);
 
     const popState = () => {
       const state = getStateFromParams();
@@ -78,6 +80,7 @@ const Home = (): ReactElement => {
       setSalary={setSalary}
       setSeconds={setSeconds}
       resetState={resetState}
+      isLoaded={isLoaded}
     />
   );
 };

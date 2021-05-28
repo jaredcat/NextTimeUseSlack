@@ -9,6 +9,7 @@ module.exports = {
         map: [
           ["@atoms", "./src/components/atoms"],
           ["@constants", "./src/constants"],
+          ["@hooks", "./src/hooks"],
           ["@molecules", "./src/components/molecules"],
           ["@organisms", "./src/components/organisms"],
           ["@shared", "./src/shared"],

@@ -1,14 +1,17 @@
 import { ReactElement, useEffect, useState, useRef } from "react";
-import { number, func } from "prop-types";
+import { number, func, bool } from "prop-types";
 import { usdFormatter, MODES, sizes } from "@constants";
 import { HighlightedText } from "@shared/styles";
-import { TextButton } from "@atoms";
+import { TextButton, TextRow } from "@atoms";
+import { Trail } from "@molecules";
+import useStartChildAnimation from "@hooks";
 
 interface TimerProps {
   burnMin: number;
   seconds: number;
   setSeconds(seconds: (prevSeconds: number) => number): void;
   setMode(mode: string): void;
+  parentAnimationStarted: boolean;
 }
 
 const formatSecsToMins = (seconds: number): string =>
@@ -19,7 +22,9 @@ const Timer = ({
   seconds,
   setSeconds,
   setMode,
+  parentAnimationStarted,
 }: TimerProps): ReactElement => {
+  const open = useStartChildAnimation({parentAnimationStarted, delay: 130});
   const burnRateSec = useRef(burnMin / 60);
   const [total, setTotal] = useState(burnRateSec.current * seconds || 0);
 
@@ -40,18 +45,19 @@ const Timer = ({
   }, [setSeconds]);
 
   return (
-    <>
-      BURNS AT <HighlightedText>{burnMinPretty}</HighlightedText> A MIN
-      <br />
-      FOR <HighlightedText>{formatSecsToMins(seconds)}</HighlightedText>
-      <br />
-      <HighlightedText fontSize="4rem">
-        {usdFormatter.format(total)}
-      </HighlightedText>
-      <br />
-      HAS BEEN BURNT
-      <br />
-      <br />
+    <Trail open={open}>
+      <TextRow>
+        BURNS AT <HighlightedText>{burnMinPretty}</HighlightedText> A MIN
+      </TextRow>
+      <TextRow>
+        FOR <HighlightedText>{formatSecsToMins(seconds)}</HighlightedText>
+      </TextRow>
+      <TextRow>
+        <HighlightedText fontSize="4rem">
+          {usdFormatter.format(total)}
+        </HighlightedText>
+      </TextRow>
+      <TextRow>HAS BEEN BURNT</TextRow>
       <TextButton
         type="button"
         fontSize={sizes.buttonFontSize}
@@ -61,7 +67,7 @@ const Timer = ({
       >
         ENTER VALUES MANUALLY
       </TextButton>
-    </>
+    </Trail>
   );
 };
 
@@ -70,6 +76,7 @@ Timer.propTypes = {
   seconds: number.isRequired,
   setSeconds: func.isRequired,
   setMode: func.isRequired,
+  parentAnimationStarted: bool.isRequired,
 };
 
 export default Timer;
