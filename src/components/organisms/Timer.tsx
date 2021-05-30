@@ -1,4 +1,4 @@
-import { ReactElement, useEffect, useState, useRef } from "react";
+import { ReactElement, useEffect, useRef } from "react";
 import { number, func, bool } from "prop-types";
 import { usdFormatter, MODES, sizes } from "@constants";
 import { HighlightedText } from "@shared/styles";
@@ -26,7 +26,7 @@ const Timer = ({
 }: TimerProps): ReactElement => {
   const open = useStartChildAnimation({ parentAnimationStarted, delay: 130 });
   const burnRateSec = useRef(burnMin / 60);
-  const [total, setTotal] = useState(burnRateSec.current * seconds || 0);
+  const total = useRef(burnRateSec.current * seconds || 0);
 
   const burnMinPretty = usdFormatter.format(burnMin);
 
@@ -37,7 +37,7 @@ const Timer = ({
   useEffect(() => {
     const timer = setInterval(() => {
       setSeconds((prevSeconds: number) => prevSeconds + 1);
-      setTotal((prevTotal) => prevTotal + burnRateSec.current);
+      total.current += burnRateSec.current;
     }, 1000);
     return () => {
       clearInterval(timer);
@@ -61,7 +61,7 @@ const Timer = ({
       </TextRow>
       <TextRow>
         <HighlightedText fontSize="4rem">
-          <Odometer text={usdFormatter.format(total)} />
+          <Odometer text={usdFormatter.format(total.current)} />
         </HighlightedText>
       </TextRow>
       <TextRow>HAS BEEN BURNT</TextRow>
