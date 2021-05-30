@@ -1,8 +1,10 @@
 import { ReactElement } from "react";
-import { number, func, string } from "prop-types";
-import { DiscreetInput, TextButton } from "@atoms";
+import { number, func, string, bool } from "prop-types";
+import { DiscreetInput, TextButton, TextRow } from "@atoms";
 import { HighlightedText } from "@shared/styles";
+import { Trail, Odometer } from "@molecules";
 import { MODES, sizes } from "@constants";
+import useStartChildAnimation from "@hooks";
 import styled from "@emotion/styled";
 
 interface StaticProps {
@@ -11,6 +13,7 @@ interface StaticProps {
   burnTotalPretty: string;
   burnMinPretty: string;
   setMode(mode: string): void;
+  parentAnimationStarted: boolean;
 }
 
 const LargeText = styled.span`
@@ -24,45 +27,58 @@ const Static = ({
   burnTotalPretty,
   burnMinPretty,
   setMode,
-}: StaticProps): ReactElement => (
-  <>
-    FOR A
-    <DiscreetInput
-      name="mins"
-      min={0}
-      max={1000}
-      stepSize={5}
-      value={mins.toString()}
-      setValue={setMins}
-      postfix=" MIN"
-    />
-    MEETING
-    <br />
-    <LargeText>
-      BURNS <HighlightedText>{burnTotalPretty}</HighlightedText>
-    </LargeText>
-    <br />
-    AT <HighlightedText>{burnMinPretty}</HighlightedText> A MIN
-    <br />
-    <br />
-    <TextButton
-      type="button"
-      fontSize={sizes.buttonFontSize}
-      onClick={() => {
-        setMode(MODES.TIMER);
-      }}
-    >
-      START MEETING TIMER
-    </TextButton>
-  </>
-);
+  parentAnimationStarted,
+}: StaticProps): ReactElement => {
+  const open = useStartChildAnimation({ parentAnimationStarted, delay: 130 });
 
+  return (
+    <Trail open={open}>
+      <TextRow>
+        FOR A{" "}
+        <DiscreetInput
+          name="mins"
+          min={0}
+          max={1000}
+          stepSize={5}
+          value={mins.toString()}
+          setValue={setMins}
+        />
+        <HighlightedText> MIN</HighlightedText> MEETING
+      </TextRow>
+      <TextRow>
+        <LargeText>
+          BURNS{" "}
+          <HighlightedText>
+            <Odometer text={burnTotalPretty} />
+          </HighlightedText>
+        </LargeText>
+      </TextRow>
+      <TextRow>
+        AT{" "}
+        <HighlightedText>
+          <Odometer text={burnMinPretty} />
+        </HighlightedText>{" "}
+        A MIN
+      </TextRow>
+      <TextButton
+        type="button"
+        fontSize={sizes.buttonFontSize}
+        onClick={() => {
+          setMode(MODES.TIMER);
+        }}
+      >
+        START MEETING TIMER
+      </TextButton>
+    </Trail>
+  );
+};
 Static.propTypes = {
   mins: number.isRequired,
   setMins: func.isRequired,
   burnTotalPretty: string.isRequired,
   burnMinPretty: string.isRequired,
   setMode: func.isRequired,
+  parentAnimationStarted: bool.isRequired,
 };
 
 export default Static;
