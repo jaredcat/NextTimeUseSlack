@@ -8,7 +8,7 @@
       "@molecules": ["src/components/molecules"],
       "@organisms": ["src/components/organisms"],
       "@shared/*": ["src/shared/*"],
-      "@templates": ["src/components/templates"],
+      "@templates": ["src/components/templates"]
     },
     "target": "es5",
     "lib": ["dom", "dom.iterable", "esnext"],
