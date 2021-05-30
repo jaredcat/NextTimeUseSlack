@@ -84,10 +84,6 @@ const DiscreetInput = ({
       newValue = (stringToInt(value) + stepSize).toString();
     } else if (e.key === "ArrowDown") {
       newValue = (stringToInt(value) - stepSize).toString();
-    } else if (e.key === "Backspace") {
-      newValue = value.slice(0, -1);
-    } else if (e.key === "Delete") {
-      newValue = value.slice(1);
     }
     let fakeEvent: React.ChangeEvent<HTMLInputElement>;
     // eslint-disable-next-line prefer-const
