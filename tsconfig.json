@@ -2,34 +2,16 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@atoms": [
-        "src/components/atoms"
-      ],
-      "@constants": [
-        "src/constants.tsx"
-      ],
-      "@hooks": [
-        "src/hooks"
-      ],
-      "@molecules": [
-        "src/components/molecules"
-      ],
-      "@organisms": [
-        "src/components/organisms"
-      ],
-      "@shared/*": [
-        "src/shared/*"
-      ],
-      "@templates": [
-        "src/components/templates"
-      ]
+      "@atoms": ["src/components/atoms"],
+      "@constants": ["src/constants.tsx"],
+      "@hooks": ["src/hooks"],
+      "@molecules": ["src/components/molecules"],
+      "@organisms": ["src/components/organisms"],
+      "@shared/*": ["src/shared/*"],
+      "@templates": ["src/components/templates"]
     },
     "target": "es5",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
+    "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": false,
@@ -42,14 +24,6 @@
     "isolatedModules": true,
     "jsx": "preserve"
   },
-  "include": [
-    "next-env.d.ts",
-    "**/*.ts",
-    "**/*.tsx",
-    "pages/**/*",
-    "src/**/*"
-  ],
-  "exclude": [
-    "node_modules"
-  ]
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "pages/**/*", "src/**/*"],
+  "exclude": ["node_modules"]
 }
