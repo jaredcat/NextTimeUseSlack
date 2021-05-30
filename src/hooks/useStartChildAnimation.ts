@@ -12,7 +12,10 @@ const useStartChildAnimation = ({
   useEffect(() => {
     // !note: 130 is magic number to sync with <MainTemplate>
     // TODO figure out a better way?
-    setTimeout(() => setIsOpen(true), delay);
+    const timer = setTimeout(() => setIsOpen(true), delay);
+    return () => {
+      clearTimeout(timer);
+    };
   }, [delay, parentAnimationStarted, setIsOpen]);
   return open;
 };
