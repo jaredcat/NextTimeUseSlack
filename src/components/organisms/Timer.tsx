@@ -3,7 +3,7 @@ import { number, func, bool } from "prop-types";
 import { usdFormatter, MODES, sizes } from "@constants";
 import { HighlightedText } from "@shared/styles";
 import { TextButton, TextRow } from "@atoms";
-import { Trail } from "@molecules";
+import { Trail, Odometer } from "@molecules";
 import useStartChildAnimation from "@hooks";
 
 interface TimerProps {
@@ -24,7 +24,7 @@ const Timer = ({
   setMode,
   parentAnimationStarted,
 }: TimerProps): ReactElement => {
-  const open = useStartChildAnimation({parentAnimationStarted, delay: 130});
+  const open = useStartChildAnimation({ parentAnimationStarted, delay: 130 });
   const burnRateSec = useRef(burnMin / 60);
   const [total, setTotal] = useState(burnRateSec.current * seconds || 0);
 
@@ -47,14 +47,21 @@ const Timer = ({
   return (
     <Trail open={open}>
       <TextRow>
-        BURNS AT <HighlightedText>{burnMinPretty}</HighlightedText> A MIN
+        BURNS AT{" "}
+        <HighlightedText>
+          <Odometer text={burnMinPretty} />
+        </HighlightedText>{" "}
+        A MIN
       </TextRow>
       <TextRow>
-        FOR <HighlightedText>{formatSecsToMins(seconds)}</HighlightedText>
+        FOR{" "}
+        <HighlightedText>
+          <Odometer text={formatSecsToMins(seconds)} />
+        </HighlightedText>
       </TextRow>
       <TextRow>
         <HighlightedText fontSize="4rem">
-          {usdFormatter.format(total)}
+          <Odometer text={usdFormatter.format(total)} />
         </HighlightedText>
       </TextRow>
       <TextRow>HAS BEEN BURNT</TextRow>

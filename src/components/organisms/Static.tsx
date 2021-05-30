@@ -2,7 +2,7 @@ import { ReactElement } from "react";
 import { number, func, string, bool } from "prop-types";
 import { DiscreetInput, TextButton, TextRow } from "@atoms";
 import { HighlightedText } from "@shared/styles";
-import { Trail } from "@molecules";
+import { Trail, Odometer } from "@molecules";
 import { MODES, sizes } from "@constants";
 import useStartChildAnimation from "@hooks";
 import styled from "@emotion/styled";
@@ -34,7 +34,7 @@ const Static = ({
   return (
     <Trail open={open}>
       <TextRow>
-        FOR A
+        FOR A{" "}
         <DiscreetInput
           name="mins"
           min={0}
@@ -42,17 +42,23 @@ const Static = ({
           stepSize={5}
           value={mins.toString()}
           setValue={setMins}
-          postfix=" MIN"
         />
-        MEETING
+        <HighlightedText> MIN</HighlightedText> MEETING
       </TextRow>
       <TextRow>
         <LargeText>
-          BURNS <HighlightedText>{burnTotalPretty}</HighlightedText>
+          BURNS{" "}
+          <HighlightedText>
+            <Odometer text={burnTotalPretty} />
+          </HighlightedText>
         </LargeText>
       </TextRow>
       <TextRow>
-        AT <HighlightedText>{burnMinPretty}</HighlightedText> A MIN
+        AT{" "}
+        <HighlightedText>
+          <Odometer text={burnMinPretty} />
+        </HighlightedText>{" "}
+        A MIN
       </TextRow>
       <TextButton
         type="button"

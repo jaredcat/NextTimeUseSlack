@@ -76,7 +76,7 @@ const MainTemplate = ({
             max={100000}
             value={people.toString()}
             setValue={setPeople}
-          />
+          />{" "}
           PEOPLE
         </TextRow>
         <TextRow>
