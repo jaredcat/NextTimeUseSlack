@@ -8,25 +8,28 @@ export enum PARAM_STRINGS {
 }
 
 export interface State {
-  [PARAM_STRINGS.PEOPLE]?: number;
-  [PARAM_STRINGS.SALARY]?: number;
-  [PARAM_STRINGS.TIME]?: number;
+  [PARAM_STRINGS.PEOPLE]?: number | null;
+  [PARAM_STRINGS.SALARY]?: number | null;
+  [PARAM_STRINGS.TIME]?: number | null;
   [PARAM_STRINGS.MODE]?: MODES;
 }
 
 export const getStateFromParams = (): State => {
   const params = new URLSearchParams(window.location.search);
   const mode = params.get(PARAM_STRINGS.MODE)?.toUpperCase();
+  const peopleParam = params.get(PARAM_STRINGS.PEOPLE);
+  const salaryParam = params.get(PARAM_STRINGS.SALARY);
+  const timeParam = params.get(PARAM_STRINGS.TIME);
 
   return {
-    [PARAM_STRINGS.PEOPLE]: Number(params.get(PARAM_STRINGS.PEOPLE)) || 0,
-    [PARAM_STRINGS.SALARY]: Number(params.get(PARAM_STRINGS.SALARY)) || 0,
-    [PARAM_STRINGS.TIME]: Number(params.get(PARAM_STRINGS.TIME)) * 60 || 0,
+    [PARAM_STRINGS.PEOPLE]: peopleParam ? Number(peopleParam) : null,
+    [PARAM_STRINGS.SALARY]: salaryParam ? Number(salaryParam) : null,
+    [PARAM_STRINGS.TIME]: timeParam ? Number(timeParam) * 60 : null,
     [PARAM_STRINGS.MODE]: mode ? MODES[mode] : MODES.STATIC,
   };
 };
 
-const findValidNumber = (newNum, oldNum): number => {
+const findValidNumber = (newNum: number, oldNum: number): number => {
   if (newNum || newNum === 0) return newNum;
   return oldNum;
 };

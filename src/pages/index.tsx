@@ -24,9 +24,9 @@ const Home = (): ReactElement => {
       [PARAM_STRINGS.MODE]: initMode,
       [PARAM_STRINGS.SALARY]: initSalary,
     }: State = getStateFromParams();
-    setPeople(initPeople || 20);
-    setSalary(initSalary || 100000);
-    setSeconds(initSeconds || 1800);
+    setPeople(initPeople || (initPeople === 0 ? 0 : 20));
+    setSalary(initSalary || (initSalary === 0 ? 0 : 100000));
+    setSeconds(initSeconds || (initSeconds === 0 ? 0 : 1800));
     setMode(initMode || MODES.STATIC);
     setIsLoaded(true);
 

@@ -1,5 +1,4 @@
 /* eslint-disable react/no-array-index-key */
-// import numbro from "numbro";
 import { number, string, oneOfType } from "prop-types";
 import { OdometerCharacter } from "@atoms";
 
@@ -10,7 +9,7 @@ const OdometerText = ({
 }): React.ReactElement => {
   const chars = String(text).split("");
   const odometerText = chars.map((char, i) => (
-    <OdometerCharacter char={char} key={i} />
+    <OdometerCharacter char={char} key={chars.length - i} />
   ));
   return <>{odometerText}</>;
 };

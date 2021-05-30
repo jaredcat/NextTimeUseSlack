@@ -1,3 +1,4 @@
+import { useRef, ReactElement } from "react";
 import { number, oneOfType, string } from "prop-types";
 import { useSpring, animated as a } from "react-spring";
 import styled from "@emotion/styled";
@@ -14,23 +15,49 @@ const Char = styled.div`
   display: inline-block;
 `;
 
+// Creates a string of numbers from the start to end consecutively, looping past 0
+const getNumbersArray = (start: number, end: number): Array<number> => {
+  const numbers: Array<number> = [];
+  let init = start;
+  if (start === 9 && end === 0) {
+    numbers.push(9, 0);
+  } else if (end < start) {
+    init = 0;
+    for (let i = end; i < 10; i += 1) {
+      numbers.push(i);
+    }
+  } else {
+    for (let i = init; i <= end; i += 1) {
+      numbers.push(i);
+    }
+  }
+  return numbers;
+};
+
 const OdometerCharacter = ({
   char,
 }: {
   char: string | number;
-}): React.ReactElement => {
+}): ReactElement => {
   const num = Number(char) || 0;
+  const prevNum = useRef(0);
+  const numberArray = getNumbersArray(prevNum.current, num);
 
   const style = useSpring({
-    from: { opacity: 0, transform: "translateY(0em)" },
-    to: { opacity: 1, transform: `translateY(${-num}em)` },
+    from: { transform: `translateY(0em)` },
+    to: { transform: `translateY(${-(numberArray.length - 1)}em)` },
+    reset: true,
   });
+
   if (Number.isNaN(Number(char))) {
     return <Char>{char}</Char>;
   }
+
+  prevNum.current = num;
+
   return (
     <Digit narrow={num === 1}>
-      <a.div style={style}>0 1 2 3 4 5 6 7 8 9 0</a.div>
+      <a.div style={style}>{numberArray.join(" ")}</a.div>
     </Digit>
   );
 };
