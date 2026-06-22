@@ -19,7 +19,7 @@ jobs:
       - name: Install and Build 🔧
         run: |
           yarn install --frozen-lockfile
-          yarn run export
+          GITHUB_PAGES=true yarn run export
 
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@4.1.3
