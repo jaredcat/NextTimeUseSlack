@@ -1,41 +1,33 @@
-/* eslint-disable react/no-array-index-key */
-import { bool, arrayOf, node, func, number } from "prop-types";
-import { Children, ReactNode, FC } from "react";
-import { useTrail, a } from "@react-spring/web";
+import { a, useTrail } from "@react-spring/web";
+import { Children, type FC, type ReactNode } from "react";
+
+const trailConfig = { mass: 8, tension: 2000, friction: 250 };
 
 const Trail: FC<{
   open: boolean;
   children: ReactNode;
-  setStarted?(done: boolean): void;
-}> = ({ open, children, setStarted }) => {
+  onStarted?(): void;
+}> = ({ open, children, onStarted }) => {
   const items = Children.toArray(children);
   const trail = useTrail(items.length, {
-    config: { mass: 8, tension: 2000, friction: 250 },
+    config: trailConfig,
     opacity: open ? 1 : 0,
     x: open ? 0 : 20,
     height: open ? 110 : 0,
     from: { opacity: 0, x: 20, height: 0 },
-    onStart: () => setStarted(true),
+    onStart: () => onStarted?.(),
   });
+
   return (
     <>
       {trail.map(({ height, ...style }, i) => (
+        // biome-ignore lint/suspicious/noArrayIndexKey: trail items are stable and index-aligned
         <a.div key={i} style={style}>
           <a.div>{items[i]}</a.div>
         </a.div>
       ))}
     </>
   );
-};
-
-Trail.propTypes = {
-  open: bool.isRequired,
-  children: arrayOf(node).isRequired,
-  setStarted: func,
-};
-
-Trail.defaultProps = {
-  setStarted: () => null,
 };
 
 export default Trail;

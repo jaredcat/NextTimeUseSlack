@@ -7,67 +7,144 @@ export enum PARAM_STRINGS {
   MODE = "mode",
 }
 
+export const PARAM_BOUNDS = {
+  [PARAM_STRINGS.PEOPLE]: { min: 0, max: 100_000 },
+  [PARAM_STRINGS.SALARY]: { min: 0, max: 10_000_000 },
+  [PARAM_STRINGS.TIME]: { min: 0, max: 1_000 },
+} as const;
+
+export const DEFAULTS = {
+  [PARAM_STRINGS.PEOPLE]: 20,
+  [PARAM_STRINGS.SALARY]: 100_000,
+  [PARAM_STRINGS.TIME]: 30,
+  [PARAM_STRINGS.MODE]: MODES.STATIC,
+} as const;
+
 export interface State {
-  [PARAM_STRINGS.PEOPLE]?: number | null;
-  [PARAM_STRINGS.SALARY]?: number | null;
-  [PARAM_STRINGS.TIME]?: number | null;
-  [PARAM_STRINGS.MODE]?: MODES;
+  [PARAM_STRINGS.PEOPLE]: number;
+  [PARAM_STRINGS.SALARY]: number;
+  [PARAM_STRINGS.TIME]: number;
+  [PARAM_STRINGS.MODE]: MODES;
 }
 
-export const getStateFromParams = (): State => {
-  const params = new URLSearchParams(window.location.search);
-  const mode = params.get(PARAM_STRINGS.MODE)?.toUpperCase();
-  const peopleParam = params.get(PARAM_STRINGS.PEOPLE);
-  const salaryParam = params.get(PARAM_STRINGS.SALARY);
-  const timeParam = params.get(PARAM_STRINGS.TIME);
+const INVALID_PARAM_VALUES = new Set(["", "null", "undefined", "nan"]);
 
-  return {
-    [PARAM_STRINGS.PEOPLE]: peopleParam ? Number(peopleParam) : null,
-    [PARAM_STRINGS.SALARY]: salaryParam ? Number(salaryParam) : null,
-    [PARAM_STRINGS.TIME]: timeParam ? Number(timeParam) * 60 : null,
-    [PARAM_STRINGS.MODE]: mode ? MODES[mode] : MODES.STATIC,
-  };
-};
+export const isValidNumber = (value: unknown): value is number =>
+  typeof value === "number" && Number.isFinite(value);
 
-const findValidNumber = (newNum: number, oldNum: number): number => {
-  if (newNum || newNum === 0) return newNum;
-  return oldNum;
-};
+const clamp = (value: number, min: number, max: number): number =>
+  Math.min(max, Math.max(min, value));
 
-export const updateParams = (state: State): void => {
-  const currentLocation = window.location;
-  const currentState: State = getStateFromParams();
-  const newState = {
-    [PARAM_STRINGS.PEOPLE]: findValidNumber(
-      state?.[PARAM_STRINGS.PEOPLE],
-      currentState[PARAM_STRINGS.PEOPLE],
-    ),
-    [PARAM_STRINGS.SALARY]: findValidNumber(
-      state?.[PARAM_STRINGS.SALARY],
-      currentState[PARAM_STRINGS.SALARY],
-    ),
-    [PARAM_STRINGS.TIME]: Math.round(
-      findValidNumber(
-        state?.[PARAM_STRINGS.TIME],
-        currentState[PARAM_STRINGS.TIME],
-      ) / 60,
-    ),
-    [PARAM_STRINGS.MODE]:
-      state?.[PARAM_STRINGS.MODE] || currentState[PARAM_STRINGS.MODE],
-  };
-
-  let newUrl = `${currentLocation.pathname}`;
-  const params = [];
-  Object.entries(newState).forEach((entry) => {
-    params.push(`${entry[0]}=${encodeURIComponent(entry[1])}`);
-  });
-  if (params.length > 0) {
-    newUrl += `?${params.join("&")}`;
+export const parseParamNumber = (
+  raw: string | null,
+  fallback: number,
+  bounds: { min: number; max: number },
+): number => {
+  if (raw == null || INVALID_PARAM_VALUES.has(raw.trim().toLowerCase())) {
+    return fallback;
   }
 
-  if (newState.mode !== currentState.mode) {
-    window.history.pushState(newState, "", newUrl);
+  const parsed = Number(raw);
+  if (!Number.isFinite(parsed)) {
+    return fallback;
+  }
+
+  return clamp(Math.round(parsed), bounds.min, bounds.max);
+};
+
+export const parseModeParam = (raw: string | null): MODES => {
+  const mode = raw?.trim().toUpperCase();
+  if (mode && mode in MODES) {
+    return MODES[mode as keyof typeof MODES];
+  }
+  return DEFAULTS[PARAM_STRINGS.MODE];
+};
+
+export const resolveNumber = (
+  next: number | null | undefined,
+  current: number,
+  fallback: number,
+  bounds: { min: number; max: number },
+): number => {
+  let candidate = fallback;
+  if (isValidNumber(next)) {
+    candidate = next;
+  } else if (isValidNumber(current)) {
+    candidate = current;
+  }
+
+  return clamp(candidate, bounds.min, bounds.max);
+};
+
+export const getStateFromParams = (): State => {
+  const params = new URLSearchParams(globalThis.location.search);
+
+  return {
+    [PARAM_STRINGS.PEOPLE]: parseParamNumber(
+      params.get(PARAM_STRINGS.PEOPLE),
+      DEFAULTS[PARAM_STRINGS.PEOPLE],
+      PARAM_BOUNDS[PARAM_STRINGS.PEOPLE],
+    ),
+    [PARAM_STRINGS.SALARY]: parseParamNumber(
+      params.get(PARAM_STRINGS.SALARY),
+      DEFAULTS[PARAM_STRINGS.SALARY],
+      PARAM_BOUNDS[PARAM_STRINGS.SALARY],
+    ),
+    [PARAM_STRINGS.TIME]:
+      parseParamNumber(
+        params.get(PARAM_STRINGS.TIME),
+        DEFAULTS[PARAM_STRINGS.TIME],
+        PARAM_BOUNDS[PARAM_STRINGS.TIME],
+      ) * 60,
+    [PARAM_STRINGS.MODE]: parseModeParam(params.get(PARAM_STRINGS.MODE)),
+  };
+};
+
+export const updateParams = (partial: Partial<State>): void => {
+  const currentState = getStateFromParams();
+  const people = resolveNumber(
+    partial[PARAM_STRINGS.PEOPLE],
+    currentState[PARAM_STRINGS.PEOPLE],
+    DEFAULTS[PARAM_STRINGS.PEOPLE],
+    PARAM_BOUNDS[PARAM_STRINGS.PEOPLE],
+  );
+  const salary = resolveNumber(
+    partial[PARAM_STRINGS.SALARY],
+    currentState[PARAM_STRINGS.SALARY],
+    DEFAULTS[PARAM_STRINGS.SALARY],
+    PARAM_BOUNDS[PARAM_STRINGS.SALARY],
+  );
+  const seconds = resolveNumber(
+    partial[PARAM_STRINGS.TIME],
+    currentState[PARAM_STRINGS.TIME],
+    DEFAULTS[PARAM_STRINGS.TIME] * 60,
+    {
+      min: PARAM_BOUNDS[PARAM_STRINGS.TIME].min * 60,
+      max: PARAM_BOUNDS[PARAM_STRINGS.TIME].max * 60,
+    },
+  );
+  const mode =
+    partial[PARAM_STRINGS.MODE] &&
+    Object.values(MODES).includes(partial[PARAM_STRINGS.MODE])
+      ? partial[PARAM_STRINGS.MODE]
+      : currentState[PARAM_STRINGS.MODE];
+
+  const minutes = Math.round(seconds / 60);
+  const newState = {
+    [PARAM_STRINGS.PEOPLE]: people,
+    [PARAM_STRINGS.SALARY]: salary,
+    [PARAM_STRINGS.TIME]: minutes,
+    [PARAM_STRINGS.MODE]: mode,
+  };
+
+  const params = Object.entries(newState).map(
+    ([key, value]) => `${key}=${encodeURIComponent(String(value))}`,
+  );
+  const newUrl = `${globalThis.location.pathname}?${params.join("&")}`;
+
+  if (newState[PARAM_STRINGS.MODE] === currentState[PARAM_STRINGS.MODE]) {
+    globalThis.history.replaceState(newState, "", newUrl);
   } else {
-    window.history.replaceState(newState, "", newUrl);
+    globalThis.history.pushState(newState, "", newUrl);
   }
 };

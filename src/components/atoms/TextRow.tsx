@@ -1,6 +1,6 @@
-import { FC, ReactNode } from "react";
-import { node } from "prop-types";
 import styled from "@emotion/styled";
+import { node } from "prop-types";
+import type { FC, ReactNode } from "react";
 
 const Row = styled.div``;
 

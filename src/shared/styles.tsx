@@ -1,6 +1,6 @@
+import { colors, sizes } from "@constants";
 import { css, Global } from "@emotion/react";
 import styled from "@emotion/styled";
-import { sizes, colors } from "@constants";
 
 export const globalStyles = (
   <Global

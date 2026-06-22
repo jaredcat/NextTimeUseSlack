@@ -4,7 +4,6 @@
     "paths": {
       "@atoms": ["src/components/atoms"],
       "@constants": ["src/constants.tsx"],
-      "@hooks": ["src/hooks"],
       "@molecules": ["src/components/molecules"],
       "@organisms": ["src/components/organisms"],
       "@shared/*": ["src/shared/*"],
@@ -14,22 +13,17 @@
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
-    "strict": false,
     "forceConsistentCasingInFileNames": true,
     "noEmit": true,
     "esModuleInterop": true,
     "module": "esnext",
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "jsx": "preserve"
+    "jsx": "react-jsx",
+    "incremental": true,
+    "strict": true
   },
-  "include": [
-    "next-env.d.ts",
-    "**/*.ts",
-    "**/*.tsx",
-    "pages/**/*",
-    "src/**/*"
-  ],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "pages/**/*", "src/**/*"],
   "exclude": ["node_modules"]
 }

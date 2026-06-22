@@ -1,13 +1,13 @@
-import Document, {
-  Html,
-  Head,
-  Main,
-  NextScript,
-  DocumentContext,
-  DocumentInitialProps,
-} from "next/document";
-
 import { GA_TRACKING_ID } from "@shared/gtag";
+import Document, {
+    type DocumentContext,
+    type DocumentInitialProps,
+    Head,
+    Html,
+    Main,
+    NextScript,
+} from "next/document";
+import type { ReactElement } from "react";
 
 class MyDocument extends Document {
   static async getInitialProps(
@@ -17,14 +17,14 @@ class MyDocument extends Document {
     return { ...initialProps };
   }
 
-  render(): JSX.Element {
+  render(): ReactElement {
     return (
       <Html>
         <Head>
           <link
             rel="preconnect"
             href="https://fonts.gstatic.com"
-            crossOrigin="true"
+            crossOrigin="anonymous"
           />
           <link
             rel="stylesheet"
@@ -36,14 +36,14 @@ class MyDocument extends Document {
             src={`https://www.googletagmanager.com/gtag/js?id=${GA_TRACKING_ID}`}
           />
           <script
-            // eslint-disable-next-line react/no-danger
+            // biome-ignore lint/security/noDangerouslySetInnerHtml: gtag requires inline bootstrap script
             dangerouslySetInnerHTML={{
               __html: `
-              window.dataLayer = window.dataLayer || [];
+              globalThis.dataLayer = globalThis.dataLayer || [];
               function gtag(){dataLayer.push(arguments);}
               gtag('js', new Date());
               gtag('config', '${GA_TRACKING_ID}', {
-                page_path: window.location.pathname,
+                page_path: globalThis.location.pathname,
               });
           `,
             }}

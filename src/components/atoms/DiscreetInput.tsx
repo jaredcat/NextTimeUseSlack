@@ -1,9 +1,14 @@
-import { string, number, func, bool } from "prop-types";
-import styled from "@emotion/styled";
+import { colors, sizes } from "@constants";
 import { css } from "@emotion/react";
-import { sizes, colors } from "@constants";
+import styled from "@emotion/styled";
+import { bool, func, number, string } from "prop-types";
 
-const dynamicStyle = ({ width, fontSize }) =>
+interface DynamicStyleProps {
+  width: number;
+  fontSize?: string;
+}
+
+const dynamicStyle = ({ width, fontSize }: DynamicStyleProps) =>
   css`
     font-size: ${fontSize};
     width: ${width}ch;
@@ -19,7 +24,7 @@ const Input = styled.input`
   font-size: ${sizes.fontSize};
   text-align: center;
   box-sizing: border-box;
-  height: ${Number(sizes.fontSize.match(/\d+/)[0]) * 33}px;
+  height: ${Number(new RegExp(/\d+/).exec(sizes.fontSize)?.[0] ?? 0) * 33}px;
   &:focus {
     outline: none;
   }
@@ -31,22 +36,34 @@ const Input = styled.input`
   }
   @media (max-width: ${sizes.small.mediaQuery}) {
     font-size: ${sizes.small.fontSize};
-    height: ${Number(sizes.small.fontSize.match(/[\d+.]/g).join("")) *
-    23.334}px;
+    height: ${Number(sizes.small.fontSize.match(/[\d+.]/g)?.join("") ?? 0) * 23.334}px;
   }
 `;
 
 const stringToInt = (str: string, min = 0): number => {
   const intStr = str.replace(/[^0-9-]/g, "");
-  if (!intStr) return min;
-  return parseInt(intStr, 10);
+  if (!intStr || intStr === "-") return min;
+
+  const parsed = Number.parseInt(intStr, 10);
+  return Number.isFinite(parsed) ? parsed : min;
+};
+
+const clamp = (
+  value: number,
+  min: number | null,
+  max: number | null,
+): number => {
+  let result = value;
+  if (min != null) result = Math.max(min, result);
+  if (max != null) result = Math.min(max, result);
+  return result;
 };
 
 interface DiscreetInputProps {
   fontSize?: string;
   format?: boolean;
-  max?: number;
-  min?: number;
+  max?: number | null;
+  min?: number | null;
   name: string;
   postfix?: string;
   prefix?: string;
@@ -56,52 +73,42 @@ interface DiscreetInputProps {
 }
 
 const DiscreetInput = ({
-  fontSize,
-  format,
-  max,
-  min,
+  fontSize = "1em",
+  format = false,
+  max = null,
+  min = null,
   name,
-  postfix,
-  prefix,
+  postfix = "",
+  prefix = "",
   setValue,
-  stepSize,
+  stepSize = 1,
   value,
 }: DiscreetInputProps): React.ReactElement => {
   const changeValue = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newValue = e?.target?.value;
-    let intValue = stringToInt(newValue, min);
-    if (max || min) {
-      if (intValue > max) intValue = max;
-      if (intValue < min) intValue = min;
-    }
+    const newValue = e.target.value;
+    const intValue = clamp(stringToInt(newValue, min ?? 0), min, max);
     setValue(intValue);
   };
 
   const onKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    let fakeTarget: HTMLInputElement;
     let newValue = value;
     if (e.key === "ArrowUp") {
       newValue = (stringToInt(value) + stepSize).toString();
     } else if (e.key === "ArrowDown") {
       newValue = (stringToInt(value) - stepSize).toString();
     }
-    let fakeEvent: React.ChangeEvent<HTMLInputElement>;
-    // eslint-disable-next-line prefer-const
-    fakeEvent = {
-      ...fakeEvent,
-      target: {
-        ...fakeTarget,
-        value: newValue,
-      },
-    };
+    const fakeEvent = {
+      target: { value: newValue },
+    } as React.ChangeEvent<HTMLInputElement>;
     changeValue(fakeEvent);
   };
 
-  let displayValue = value;
+  const safeValue = value ?? "";
+  let displayValue = safeValue;
   if (format) {
-    displayValue = stringToInt(value).toLocaleString("en");
+    displayValue = stringToInt(safeValue, min ?? 0).toLocaleString("en");
   }
-  displayValue = `${prefix}${displayValue}${postfix}`;
+  displayValue = `${prefix ?? ""}${displayValue}${postfix ?? ""}`;
 
   return (
     <Input
@@ -127,15 +134,6 @@ DiscreetInput.propTypes = {
   setValue: func.isRequired,
   stepSize: number,
   value: string.isRequired,
-};
-DiscreetInput.defaultProps = {
-  fontSize: "1em",
-  format: false,
-  max: null,
-  min: null,
-  postfix: "",
-  prefix: "",
-  stepSize: 1,
 };
 
 export default DiscreetInput;

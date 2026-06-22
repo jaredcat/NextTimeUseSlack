@@ -1,65 +1,85 @@
-import { useState, useEffect, ReactElement, useRef } from "react";
-import MainTemplate from "@templates";
-import {
-  updateParams,
-  PARAM_STRINGS,
-  State,
-  getStateFromParams,
-} from "@shared/params";
 import { MODES } from "@constants";
+import {
+  DEFAULTS,
+  getStateFromParams,
+  PARAM_STRINGS,
+  type State,
+  updateParams,
+} from "@shared/params";
+import MainTemplate from "@templates";
+import { type ReactElement, useEffect, useRef, useState } from "react";
 
-const Home = (): ReactElement => {
-  const prevState = useRef<State>({});
-  const [isLoaded, setIsLoaded] = useState<boolean>(false);
-  const [people, setPeople] = useState<number>(20);
-  const [salary, setSalary] = useState<number>(100000);
-  const [seconds, setSeconds] = useState<number>(1800);
-  const [mode, setMode] = useState<MODES>(MODES.STATIC);
+const defaultState: State = {
+  [PARAM_STRINGS.PEOPLE]: DEFAULTS[PARAM_STRINGS.PEOPLE],
+  [PARAM_STRINGS.SALARY]: DEFAULTS[PARAM_STRINGS.SALARY],
+  [PARAM_STRINGS.TIME]: DEFAULTS[PARAM_STRINGS.TIME] * 60,
+  [PARAM_STRINGS.MODE]: DEFAULTS[PARAM_STRINGS.MODE],
+};
 
-  // Gets initial state from url params and setups popstate event listener
+const Home = (): ReactElement | null => {
+  const prevState = useRef<State>(defaultState);
+  const skipUrlSync = useRef(true);
+  const [isReady, setIsReady] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [people, setPeople] = useState(defaultState[PARAM_STRINGS.PEOPLE]);
+  const [salary, setSalary] = useState(defaultState[PARAM_STRINGS.SALARY]);
+  const [seconds, setSeconds] = useState(defaultState[PARAM_STRINGS.TIME]);
+  const [mode, setMode] = useState<MODES>(defaultState[PARAM_STRINGS.MODE]);
+
   useEffect(() => {
-    const {
-      [PARAM_STRINGS.PEOPLE]: initPeople,
-      [PARAM_STRINGS.TIME]: initSeconds,
-      [PARAM_STRINGS.MODE]: initMode,
-      [PARAM_STRINGS.SALARY]: initSalary,
-    }: State = getStateFromParams();
-    setPeople(initPeople || (initPeople === 0 ? 0 : 20));
-    setSalary(initSalary || (initSalary === 0 ? 0 : 100000));
-    setSeconds(initSeconds || (initSeconds === 0 ? 0 : 1800));
-    setMode(initMode || MODES.STATIC);
+    const state = getStateFromParams();
+    setPeople(state[PARAM_STRINGS.PEOPLE]);
+    setSalary(state[PARAM_STRINGS.SALARY]);
+    setSeconds(state[PARAM_STRINGS.TIME]);
+    setMode(state[PARAM_STRINGS.MODE]);
+    prevState.current = state;
+    setIsReady(true);
     setIsLoaded(true);
 
     const popState = () => {
-      const state = getStateFromParams();
-      setMode(state.mode || MODES.STATIC);
-      updateParams(state);
+      const nextState = getStateFromParams();
+      setPeople(nextState[PARAM_STRINGS.PEOPLE]);
+      setSalary(nextState[PARAM_STRINGS.SALARY]);
+      setSeconds(nextState[PARAM_STRINGS.TIME]);
+      setMode(nextState[PARAM_STRINGS.MODE]);
+      prevState.current = nextState;
     };
-    window.addEventListener("popstate", popState);
 
-    return () => window.removeEventListener("popstate", popState);
+    globalThis.addEventListener("popstate", popState);
+    return () => globalThis.removeEventListener("popstate", popState);
   }, []);
 
-  // Updates the url params to current state
   useEffect(() => {
-    const currentState = {
+    if (skipUrlSync.current) {
+      skipUrlSync.current = false;
+      return;
+    }
+
+    const currentState: State = {
       [PARAM_STRINGS.PEOPLE]: people,
       [PARAM_STRINGS.SALARY]: salary,
       [PARAM_STRINGS.TIME]: seconds,
       [PARAM_STRINGS.MODE]: mode,
     };
 
-    const updateState: State = {};
-    if (prevState.current[PARAM_STRINGS.PEOPLE] !== people)
+    const updateState: Partial<State> = {};
+    if (prevState.current[PARAM_STRINGS.PEOPLE] !== people) {
       updateState[PARAM_STRINGS.PEOPLE] = people;
-    if (prevState.current[PARAM_STRINGS.SALARY] !== salary)
+    }
+    if (prevState.current[PARAM_STRINGS.SALARY] !== salary) {
       updateState[PARAM_STRINGS.SALARY] = salary;
-    if (prevState.current[PARAM_STRINGS.TIME] !== Math.round(seconds / 60))
+    }
+    if (prevState.current[PARAM_STRINGS.TIME] !== seconds) {
       updateState[PARAM_STRINGS.TIME] = seconds;
-    if (prevState.current[PARAM_STRINGS.MODE] !== mode)
+    }
+    if (prevState.current[PARAM_STRINGS.MODE] !== mode) {
       updateState[PARAM_STRINGS.MODE] = mode;
+    }
 
-    updateParams(updateState);
+    if (Object.keys(updateState).length > 0) {
+      updateParams(updateState);
+    }
+
     prevState.current = currentState;
   }, [people, salary, seconds, mode]);
 
@@ -68,6 +88,10 @@ const Home = (): ReactElement => {
     setSalary(0);
     setSeconds(0);
   };
+
+  if (!isReady) {
+    return null;
+  }
 
   return (
     <MainTemplate

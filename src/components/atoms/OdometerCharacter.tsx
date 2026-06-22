@@ -1,7 +1,7 @@
-import { useRef, ReactElement } from "react";
-import { number, oneOfType, string } from "prop-types";
-import { useSpring, animated as a } from "react-spring";
 import styled from "@emotion/styled";
+import { number, oneOfType, string } from "prop-types";
+import { type ReactElement, useRef } from "react";
+import { animated as a, useSpring } from "react-spring";
 
 const Digit = styled.div`
   display: inline-block;

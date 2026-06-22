@@ -1,29 +1,43 @@
-import { useState } from "react";
-import { func } from "prop-types";
-import styled from "@emotion/styled";
 import { colors } from "@constants";
-import { useSpring, animated as a } from "react-spring";
+import styled from "@emotion/styled";
+import { func } from "prop-types";
+import { useState } from "react";
+import { animated as a, useSpring } from "react-spring";
 
 const Button = styled(a.button)`
+  align-items: center;
   background: rgba(255, 255, 255, 0.2);
-  border-radius: 30px;
   border: none;
+  border-radius: 50%;
   color: ${colors.highlighted};
-  display: inline-block;
-  font-size: 40px;
+  cursor: pointer;
+  display: flex;
   height: 50px;
-  width: 50px;
-  line-height: 50px;
+  justify-content: center;
   margin: 20px;
   padding: 0;
   position: absolute;
   right: 0;
   top: 0;
-  cursor: pointer;
+  transform-origin: center center;
+  width: 50px;
+
   &:hover {
     background: rgba(255, 255, 255, 0.4);
   }
 `;
+
+const CloseIcon = () => (
+  <svg aria-hidden="true" height="24" viewBox="0 0 24 24" width="24">
+    <path
+      d="M6 6l12 12M18 6L6 18"
+      fill="none"
+      stroke="currentColor"
+      strokeLinecap="round"
+      strokeWidth="2.5"
+    />
+  </svg>
+);
 const ResetButton = ({
   resetState,
 }: {
@@ -51,7 +65,7 @@ const ResetButton = ({
       onClick={handleOnClick}
       title="Clear all input"
     >
-      &times;
+      <CloseIcon />
     </Button>
   );
 };

@@ -1,6 +1,5 @@
-/* eslint-disable react/no-array-index-key */
-import { number, string, oneOfType } from "prop-types";
 import { OdometerCharacter } from "@atoms";
+import { number, oneOfType, string } from "prop-types";
 
 const OdometerText = ({
   text,
@@ -9,6 +8,7 @@ const OdometerText = ({
 }): React.ReactElement => {
   const chars = String(text).split("");
   const odometerText = chars.map((char, i) => (
+    // biome-ignore lint/suspicious/noArrayIndexKey: stable digit order for odometer animation
     <OdometerCharacter char={char} key={chars.length - i} />
   ));
   return <>{odometerText}</>;

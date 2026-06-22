@@ -1,38 +1,41 @@
-import { ReactElement, useEffect, useRef } from "react";
-import { number, func, bool } from "prop-types";
-import { usdFormatter, MODES, sizes } from "@constants";
-import { HighlightedText } from "@shared/styles";
 import { TextButton, TextRow } from "@atoms";
-import { Trail, Odometer } from "@molecules";
-import useStartChildAnimation from "@hooks";
+import { MODES, sizes, usdFormatter } from "@constants";
+import { Odometer, Trail } from "@molecules";
+import { isValidNumber } from "@shared/params";
+import { HighlightedText } from "@shared/styles";
+import { bool, func, number } from "prop-types";
+import { type ReactElement, useEffect, useRef } from "react";
 
 interface TimerProps {
   burnMin: number;
   seconds: number;
   setSeconds(seconds: (prevSeconds: number) => number): void;
   setMode(mode: string): void;
-  parentAnimationStarted: boolean;
+  contentOpen: boolean;
 }
 
-const formatSecsToMins = (seconds: number): string =>
-  new Date(seconds * 1000).toISOString().substr(11, 8);
+const formatSecsToMins = (seconds: number): string => {
+  const safeSeconds = isValidNumber(seconds) ? Math.max(0, seconds) : 0;
+  return new Date(safeSeconds * 1000).toISOString().slice(11, 19);
+};
 
 const Timer = ({
   burnMin,
   seconds,
   setSeconds,
   setMode,
-  parentAnimationStarted,
+  contentOpen,
 }: TimerProps): ReactElement => {
-  const open = useStartChildAnimation({ parentAnimationStarted, delay: 130 });
-  const burnRateSec = useRef(burnMin / 60);
-  const total = useRef(burnRateSec.current * seconds || 0);
+  const safeBurnMin = isValidNumber(burnMin) ? burnMin : 0;
+  const safeSeconds = isValidNumber(seconds) ? seconds : 0;
+  const burnRateSec = useRef(safeBurnMin / 60);
+  const total = useRef((safeBurnMin / 60) * safeSeconds);
 
-  const burnMinPretty = usdFormatter.format(burnMin);
+  const burnMinPretty = usdFormatter.format(safeBurnMin);
 
   useEffect(() => {
-    burnRateSec.current = burnMin / 60;
-  }, [burnMin]);
+    burnRateSec.current = safeBurnMin / 60;
+  }, [safeBurnMin]);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -45,7 +48,7 @@ const Timer = ({
   }, [setSeconds]);
 
   return (
-    <Trail open={open}>
+    <Trail open={contentOpen}>
       <TextRow>
         BURNS AT{" "}
         <HighlightedText>
@@ -56,7 +59,7 @@ const Timer = ({
       <TextRow>
         FOR{" "}
         <HighlightedText>
-          <Odometer text={formatSecsToMins(seconds)} />
+          <Odometer text={formatSecsToMins(safeSeconds)} />
         </HighlightedText>
       </TextRow>
       <TextRow>
@@ -83,7 +86,7 @@ Timer.propTypes = {
   seconds: number.isRequired,
   setSeconds: func.isRequired,
   setMode: func.isRequired,
-  parentAnimationStarted: bool.isRequired,
+  contentOpen: bool.isRequired,
 };
 
 export default Timer;

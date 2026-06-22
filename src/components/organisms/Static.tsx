@@ -1,11 +1,11 @@
-import { ReactElement } from "react";
-import { number, func, string, bool } from "prop-types";
 import { DiscreetInput, TextButton, TextRow } from "@atoms";
-import { HighlightedText } from "@shared/styles";
-import { Trail, Odometer } from "@molecules";
 import { MODES, sizes } from "@constants";
-import useStartChildAnimation from "@hooks";
 import styled from "@emotion/styled";
+import { Odometer, Trail } from "@molecules";
+import { isValidNumber } from "@shared/params";
+import { HighlightedText } from "@shared/styles";
+import { bool, func, number, string } from "prop-types";
+import type { ReactElement } from "react";
 
 interface StaticProps {
   mins: number;
@@ -13,7 +13,7 @@ interface StaticProps {
   burnTotalPretty: string;
   burnMinPretty: string;
   setMode(mode: string): void;
-  parentAnimationStarted: boolean;
+  contentOpen: boolean;
 }
 
 const LargeText = styled.span`
@@ -27,12 +27,9 @@ const Static = ({
   burnTotalPretty,
   burnMinPretty,
   setMode,
-  parentAnimationStarted,
-}: StaticProps): ReactElement => {
-  const open = useStartChildAnimation({ parentAnimationStarted, delay: 130 });
-
-  return (
-    <Trail open={open}>
+  contentOpen,
+}: StaticProps): ReactElement => (
+  <Trail open={contentOpen}>
       <TextRow>
         FOR A{" "}
         <DiscreetInput
@@ -40,7 +37,7 @@ const Static = ({
           min={0}
           max={1000}
           stepSize={5}
-          value={mins.toString()}
+          value={String(isValidNumber(mins) ? mins : 0)}
           setValue={setMins}
         />
         <HighlightedText> MIN</HighlightedText> MEETING
@@ -70,15 +67,14 @@ const Static = ({
         START MEETING TIMER
       </TextButton>
     </Trail>
-  );
-};
+);
 Static.propTypes = {
   mins: number.isRequired,
   setMins: func.isRequired,
   burnTotalPretty: string.isRequired,
   burnMinPretty: string.isRequired,
   setMode: func.isRequired,
-  parentAnimationStarted: bool.isRequired,
+  contentOpen: bool.isRequired,
 };
 
 export default Static;
