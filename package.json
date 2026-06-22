@@ -5,7 +5,7 @@
     "dev": "next",
     "build": "next build",
     "start": "next start",
-    "export": "yarn run build && next export && touch out/.nojekyll && touch out/CNAME && echo nexttimeuseslack.com>> out/CNAME",
+    "export": "yarn run build && next export && touch out/.nojekyll",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix"
   },
