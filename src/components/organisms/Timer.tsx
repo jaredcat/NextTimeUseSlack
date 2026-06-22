@@ -4,7 +4,7 @@ import { Odometer, Trail } from "@molecules";
 import { isValidNumber } from "@shared/params";
 import { HighlightedText } from "@shared/styles";
 import { bool, func, number } from "prop-types";
-import { type ReactElement, useEffect, useRef } from "react";
+import { type ReactElement, useEffect, useState } from "react";
 
 interface TimerProps {
   burnMin: number;
@@ -28,24 +28,27 @@ const Timer = ({
 }: TimerProps): ReactElement => {
   const safeBurnMin = isValidNumber(burnMin) ? burnMin : 0;
   const safeSeconds = isValidNumber(seconds) ? seconds : 0;
-  const burnRateSec = useRef(safeBurnMin / 60);
-  const total = useRef((safeBurnMin / 60) * safeSeconds);
+  const [totalBurned, setTotalBurned] = useState(
+    () => (safeBurnMin / 60) * safeSeconds,
+  );
 
   const burnMinPretty = usdFormatter.format(safeBurnMin);
 
   useEffect(() => {
-    burnRateSec.current = safeBurnMin / 60;
-  }, [safeBurnMin]);
+    setTotalBurned((safeBurnMin / 60) * safeSeconds);
+  }, [safeBurnMin, safeSeconds]);
 
   useEffect(() => {
     const timer = setInterval(() => {
       setSeconds((prevSeconds: number) => prevSeconds + 1);
-      total.current += burnRateSec.current;
+      setTotalBurned(
+        (prevTotal) => prevTotal + (isValidNumber(burnMin) ? burnMin : 0) / 60,
+      );
     }, 1000);
     return () => {
       clearInterval(timer);
     };
-  }, [setSeconds]);
+  }, [burnMin, setSeconds]);
 
   return (
     <Trail open={contentOpen}>
@@ -64,7 +67,7 @@ const Timer = ({
       </TextRow>
       <TextRow>
         <HighlightedText fontSize="4rem">
-          <Odometer text={usdFormatter.format(total.current)} />
+          <Odometer text={usdFormatter.format(totalBurned)} />
         </HighlightedText>
       </TextRow>
       <TextRow>HAS BEEN BURNT</TextRow>

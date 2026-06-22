@@ -8,8 +8,7 @@ const OdometerText = ({
 }): React.ReactElement => {
   const chars = String(text).split("");
   const odometerText = chars.map((char, i) => (
-    // biome-ignore lint/suspicious/noArrayIndexKey: stable digit order for odometer animation
-    <OdometerCharacter char={char} key={chars.length - i} />
+    <OdometerCharacter char={char} key={`pos-${i}`} />
   ));
   return <>{odometerText}</>;
 };

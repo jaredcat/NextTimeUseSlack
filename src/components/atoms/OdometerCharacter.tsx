@@ -1,6 +1,5 @@
 import styled from "@emotion/styled";
-import { number, oneOfType, string } from "prop-types";
-import { type ReactElement, useRef } from "react";
+import { memo, useEffect, useRef, useState } from "react";
 import { animated as a, useSpring } from "react-spring";
 
 const Digit = styled.div`
@@ -15,7 +14,6 @@ const Char = styled.div`
   display: inline-block;
 `;
 
-// Creates a string of numbers from the start to end consecutively, looping past 0
 const getNumbersArray = (start: number, end: number): Array<number> => {
   const numbers: Array<number> = [];
   let init = start;
@@ -35,36 +33,57 @@ const getNumbersArray = (start: number, end: number): Array<number> => {
   return numbers;
 };
 
-const OdometerCharacter = ({
-  char,
-}: {
-  char: string | number;
-}): ReactElement => {
-  const num = Number(char) || 0;
-  const prevNum = useRef(0);
-  const numberArray = getNumbersArray(prevNum.current, num);
+const OdometerCharacter = memo(
+  ({ char }: { char: string | number }): React.ReactElement => {
+    const isDigit = !Number.isNaN(Number(char));
+    const num = isDigit ? Number(char) : 0;
+    const prevNum = useRef<number | null>(null);
+    const [strip, setStrip] = useState(() => (isDigit ? String(num) : ""));
 
-  const style = useSpring({
-    from: { transform: `translateY(0em)` },
-    to: { transform: `translateY(${-(numberArray.length - 1)}em)` },
-    reset: true,
-  });
+    const [style, api] = useSpring(
+      () => ({
+        transform: "translateY(0em)",
+      }),
+      [],
+    );
 
-  if (Number.isNaN(Number(char))) {
-    return <Char>{char}</Char>;
-  }
+    useEffect(() => {
+      if (!isDigit) {
+        return;
+      }
 
-  prevNum.current = num;
+      if (prevNum.current === null) {
+        prevNum.current = num;
+        setStrip(String(num));
+        return;
+      }
 
-  return (
-    <Digit narrow={num === 1}>
-      <a.div style={style}>{numberArray.join(" ")}</a.div>
-    </Digit>
-  );
-};
+      if (prevNum.current === num) {
+        return;
+      }
 
-OdometerCharacter.propTypes = {
-  char: oneOfType([number, string]).isRequired,
-};
+      const numberArray = getNumbersArray(prevNum.current, num);
+      setStrip(numberArray.join(" "));
+      api.start({
+        from: { transform: "translateY(0em)" },
+        to: { transform: `translateY(${-(numberArray.length - 1)}em)` },
+        reset: true,
+      });
+      prevNum.current = num;
+    }, [num, isDigit, api]);
+
+    if (!isDigit) {
+      return <Char>{char}</Char>;
+    }
+
+    return (
+      <Digit narrow={num === 1}>
+        <a.div style={style}>{strip}</a.div>
+      </Digit>
+    );
+  },
+);
+
+OdometerCharacter.displayName = "OdometerCharacter";
 
 export default OdometerCharacter;
