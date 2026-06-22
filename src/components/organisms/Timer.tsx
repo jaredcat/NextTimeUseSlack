@@ -19,6 +19,8 @@ const formatSecsToMins = (seconds: number): string => {
   return new Date(safeSeconds * 1000).toISOString().slice(11, 19);
 };
 
+const formatCurrency = (value: number): string => usdFormatter.format(value);
+
 const Timer = ({
   burnMin,
   seconds,
@@ -31,8 +33,6 @@ const Timer = ({
   const [totalBurned, setTotalBurned] = useState(
     () => (safeBurnMin / 60) * safeSeconds,
   );
-
-  const burnMinPretty = usdFormatter.format(safeBurnMin);
 
   useEffect(() => {
     setTotalBurned((safeBurnMin / 60) * safeSeconds);
@@ -55,19 +55,23 @@ const Timer = ({
       <TextRow>
         BURNS AT{" "}
         <HighlightedText>
-          <Odometer text={burnMinPretty} />
+          <Odometer format={formatCurrency} value={safeBurnMin} />
         </HighlightedText>{" "}
         A MIN
       </TextRow>
       <TextRow>
         FOR{" "}
         <HighlightedText>
-          <Odometer text={formatSecsToMins(safeSeconds)} />
+          <Odometer
+            decimals={0}
+            format={formatSecsToMins}
+            value={safeSeconds}
+          />
         </HighlightedText>
       </TextRow>
       <TextRow>
         <HighlightedText fontSize="4rem">
-          <Odometer text={usdFormatter.format(totalBurned)} />
+          <Odometer format={formatCurrency} value={totalBurned} />
         </HighlightedText>
       </TextRow>
       <TextRow>HAS BEEN BURNT</TextRow>

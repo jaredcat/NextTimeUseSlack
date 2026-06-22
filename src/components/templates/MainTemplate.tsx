@@ -1,10 +1,20 @@
 import { DiscreetInput, TextRow } from "@atoms";
 import { MINS_A_YEAR, MODES, usdFormatter } from "@constants";
-import { isValidNumber } from "@shared/params";
+import styled from "@emotion/styled";
 import { ResetButton, Trail } from "@molecules";
 import { Static, Timer } from "@organisms";
+import { maxFormattedLength } from "@shared/odometer";
+import { isValidNumber } from "@shared/params";
 import { bool, func, number, string } from "prop-types";
 import { type ReactElement, useEffect, useState } from "react";
+
+const formatCurrency = (value: number): string => usdFormatter.format(value);
+
+const PageContent = styled.div<{ $minWidth: string }>`
+  max-width: 100%;
+  min-width: ${({ $minWidth }) => $minWidth};
+  width: max-content;
+`;
 
 interface MainProps {
   mode: string;
@@ -37,8 +47,13 @@ const MainTemplate = ({
   const mins = Math.round(safeSeconds / 60);
   const burnMin = (safeSalary * safePeople) / MINS_A_YEAR;
   const burnTotal = (burnMin * safeSeconds) / 60;
-  const burnMinPretty = usdFormatter.format(burnMin);
-  const burnTotalPretty = usdFormatter.format(burnTotal);
+  const currencyChars = maxFormattedLength(
+    formatCurrency,
+    burnTotal,
+    burnMin,
+  );
+  // BURNS line uses 3rem type on a 2rem page; reserve width without exceeding the viewport.
+  const pageMinWidth = `min(calc(${6 + Math.ceil(currencyChars * 1.6)}ch), calc(100vw - 2rem))`;
   const [contentOpen, setContentOpen] = useState(false);
 
   useEffect(() => {
@@ -57,8 +72,8 @@ const MainTemplate = ({
       <Static
         mins={mins}
         setMins={setMins}
-        burnTotalPretty={burnTotalPretty}
-        burnMinPretty={burnMinPretty}
+        burnTotal={burnTotal}
+        burnMin={burnMin}
         setMode={setMode}
         contentOpen={contentOpen}
       />
@@ -76,7 +91,7 @@ const MainTemplate = ({
   }
 
   return (
-    <>
+    <PageContent $minWidth={pageMinWidth}>
       <ResetButton resetState={resetState} />
       <Trail open={isLoaded} onStarted={() => setContentOpen(true)}>
         <TextRow>
@@ -105,7 +120,7 @@ const MainTemplate = ({
         </TextRow>
       </Trail>
       {body}
-    </>
+    </PageContent>
   );
 };
 

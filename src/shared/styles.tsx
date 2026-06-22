@@ -25,12 +25,18 @@ export const globalStyles = (
         }
       }
       body {
-        display: grid;
+        align-items: center;
+        box-sizing: border-box;
+        display: flex;
         justify-content: center;
-        align-content: center;
+        min-height: 100%;
+        padding: 1rem;
         @media (max-width: ${sizes.small.mediaQuery}) {
-          justify-content: revert;
+          padding: 1rem 0.75rem;
         }
+      }
+      #__next {
+        max-width: 100%;
       }
     `}
   />
