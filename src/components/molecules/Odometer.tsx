@@ -1,8 +1,10 @@
 import { OdometerDigit, OdometerSymbol } from "@atoms";
+import styled from "@emotion/styled";
 import {
   DEFAULT_ODOMETER_DURATION_MS,
   getAnimationDuration,
   getColumnSpins,
+  getCurrencyWheelPosition,
   getDigitsLeftToRightFromFormatted,
   type ColumnSpin,
 } from "@shared/odometer";
@@ -13,7 +15,17 @@ interface OdometerProps {
   format?: (value: number) => string;
   duration?: number;
   decimals?: number;
+  continuous?: boolean;
+  wheelPositionAt?: (
+    digitPlace: number,
+    value: number,
+    digitCount: number,
+  ) => number;
 }
+
+const OdometerFrame = styled.span`
+  font-variant-numeric: tabular-nums;
+`;
 
 const toUnits = (value: number, decimals: number): number =>
   Math.round(value * 10 ** decimals);
@@ -30,6 +42,8 @@ const Odometer = ({
   format = String,
   duration = DEFAULT_ODOMETER_DURATION_MS,
   decimals = 2,
+  continuous = false,
+  wheelPositionAt,
 }: OdometerProps): React.ReactElement => {
   const [displayValue, setDisplayValue] = useState(value);
   const [columnSpins, setColumnSpins] = useState<ColumnSpin[]>(() =>
@@ -40,6 +54,10 @@ const Odometer = ({
   const displayRef = useRef(value);
 
   useEffect(() => {
+    if (continuous) {
+      return;
+    }
+
     const startUnits = toUnits(displayRef.current, decimals);
     const endUnits = toUnits(value, decimals);
 
@@ -57,14 +75,21 @@ const Odometer = ({
     setDisplayValue(value);
     displayRef.current = value;
     setAnimationKey((key) => key + 1);
-  }, [value, duration, decimals, format]);
+  }, [value, duration, decimals, format, continuous]);
 
-  const formatted = format(displayValue);
+  const shownValue = continuous ? value : displayValue;
+  const formatted = format(shownValue);
+  const digitCount = getDigitsLeftToRightFromFormatted(formatted).length;
+  const resolveWheelPosition =
+    wheelPositionAt ??
+    ((digitPlace: number, currentValue: number, count: number) =>
+      getCurrencyWheelPosition(digitPlace, currentValue, count, decimals));
+
   let digitPlace = -1;
   let symbolPlace = -1;
 
   return (
-    <>
+    <OdometerFrame>
       {formatted.split("").map((char) => {
         if (!/\d/.test(char)) {
           symbolPlace += 1;
@@ -75,14 +100,20 @@ const Odometer = ({
         return (
           <OdometerDigit
             animationKey={animationKey}
+            continuous={continuous}
             digit={Number(char)}
             durationMs={animDurationMs}
             key={`place-${digitPlace}`}
             spin={columnSpins[digitPlace] ?? idleSpin(Number(char))}
+            wheelPosition={resolveWheelPosition(
+              digitPlace,
+              shownValue,
+              digitCount,
+            )}
           />
         );
       })}
-    </>
+    </OdometerFrame>
   );
 };
 

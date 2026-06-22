@@ -84,3 +84,61 @@ export const getAnimationDuration = (
 };
 
 export const getDigitsLeftToRightFromFormatted = getDigitsLeftToRight;
+
+export const WHEEL_WEIGHT_BASE = 1.4;
+export const WHEEL_WEIGHT_PER_PLACE = 0.55;
+
+/** Bias wheel scroll so the next digit only appears near rollover (power curve). */
+export const applyWheelWeight = (
+  linearPosition: number,
+  weight: number,
+): number => {
+  if (weight <= 1) {
+    return linearPosition;
+  }
+
+  const whole = Math.floor(linearPosition);
+  const fraction = linearPosition - whole;
+
+  if (fraction <= 0) {
+    return whole;
+  }
+
+  return whole + fraction ** weight;
+};
+
+export const getCurrencyWheelPosition = (
+  digitPlace: number,
+  value: number,
+  digitCount: number,
+  decimals: number,
+): number => {
+  const units = value * 10 ** decimals;
+  const place = digitCount - 1 - digitPlace;
+  const linear = units / 10 ** place;
+  const weight = WHEEL_WEIGHT_BASE + place * WHEEL_WEIGHT_PER_PLACE;
+
+  return applyWheelWeight(linear, weight);
+};
+
+export const getTimeDigitWheelPosition = (
+  digitPlace: number,
+  totalSeconds: number,
+): number => {
+  const sec = totalSeconds % 60;
+  const min = Math.floor((totalSeconds % 3600) / 60);
+  const hour = Math.floor(totalSeconds / 3600);
+  const positions = [
+    hour / 10,
+    hour % 10,
+    min / 10,
+    min % 10,
+    sec / 10,
+    sec % 10,
+  ];
+  const linear = positions[digitPlace] ?? 0;
+  // Hours/minutes stay stable longer; seconds roll more freely.
+  const timeWeights = [3.5, 3, 2.8, 2.2, 1.3, 1.05];
+
+  return applyWheelWeight(linear, timeWeights[digitPlace] ?? WHEEL_WEIGHT_BASE);
+};
