@@ -1,13 +1,18 @@
 self.__BUILD_MANIFEST = {
   "/": [
-    "static/chunks/40gw3pm1h78sj.js"
+    "static/chunks/1f6m7_o5_l0cp.js"
   ],
   "/_error": [
-    "static/chunks/2wef1oh07duc6.js"
+    "static/chunks/2x0l09o69i-h5.js"
   ],
   "__rewrites": {
     "afterFiles": [],
-    "beforeFiles": [],
+    "beforeFiles": [
+      {
+        "source": "/NextTimeUseSlack//_next/:path+",
+        "destination": "/NextTimeUseSlack/_next/:path+"
+      }
+    ],
     "fallback": []
   },
   "sortedPages": [
