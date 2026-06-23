@@ -40,6 +40,27 @@ export const globalStyles = (
       #__next {
         max-width: 100%;
       }
+      body[data-zoom-mode="true"] {
+        align-items: center;
+        justify-content: flex-start;
+        padding: 1rem min(42vw, 32rem) 1rem 2.5rem;
+      }
+      body[data-zoom-mode="true"] button,
+      body[data-zoom-mode="true"] [data-zoom-control] {
+        display: none;
+      }
+      body[data-zoom-mode="true"] #__next {
+        display: flex;
+        justify-content: flex-start;
+        width: 100%;
+      }
+      @media (max-width: ${sizes.small.mediaQuery}) {
+        body[data-zoom-mode="true"] {
+          align-items: flex-start;
+          justify-content: flex-start;
+          padding: 3.5rem 0.75rem 1rem 0.75rem;
+        }
+      }
     `}
   />
 );

@@ -270,7 +270,7 @@ const Timer = ({
           setMode(MODES.STATIC);
         }}
       >
-        ENTER VALUES MANUALLY
+        CALCULATOR MODE
       </TextButton>
     </Trail>
   );

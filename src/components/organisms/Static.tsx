@@ -60,7 +60,7 @@ const Static = ({
         setMode(MODES.TIMER);
       }}
     >
-      START MEETING TIMER
+      TIMER MODE
     </TextButton>
   </Trail>
 );

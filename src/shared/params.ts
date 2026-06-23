@@ -5,6 +5,7 @@ export enum PARAM_STRINGS {
   SALARY = "s",
   TIME = "t",
   MODE = "mode",
+  ZOOM = "z",
 }
 
 export const PARAM_BOUNDS = {
@@ -18,6 +19,7 @@ export const DEFAULTS = {
   [PARAM_STRINGS.SALARY]: 100_000,
   [PARAM_STRINGS.TIME]: 30,
   [PARAM_STRINGS.MODE]: MODES.STATIC,
+  [PARAM_STRINGS.ZOOM]: false,
 } as const;
 
 export interface State {
@@ -25,6 +27,7 @@ export interface State {
   [PARAM_STRINGS.SALARY]: number;
   [PARAM_STRINGS.TIME]: number;
   [PARAM_STRINGS.MODE]: MODES;
+  [PARAM_STRINGS.ZOOM]: boolean;
 }
 
 const INVALID_PARAM_VALUES = new Set(["", "null", "undefined", "nan"]);
@@ -58,6 +61,22 @@ export const parseModeParam = (raw: string | null): MODES => {
     return MODES[mode as keyof typeof MODES];
   }
   return DEFAULTS[PARAM_STRINGS.MODE];
+};
+
+export const parseZoomParam = (raw: string | null): boolean => {
+  if (raw == null) {
+    return DEFAULTS[PARAM_STRINGS.ZOOM];
+  }
+
+  const normalized = raw.trim().toLowerCase();
+  if (normalized === "1" || normalized === "true" || normalized === "yes") {
+    return true;
+  }
+  if (normalized === "0" || normalized === "false" || normalized === "no") {
+    return false;
+  }
+
+  return DEFAULTS[PARAM_STRINGS.ZOOM];
 };
 
 export const resolveNumber = (
@@ -97,6 +116,7 @@ export const getStateFromParams = (): State => {
         PARAM_BOUNDS[PARAM_STRINGS.TIME],
       ) * 60,
     [PARAM_STRINGS.MODE]: parseModeParam(params.get(PARAM_STRINGS.MODE)),
+    [PARAM_STRINGS.ZOOM]: parseZoomParam(params.get(PARAM_STRINGS.ZOOM)),
   };
 };
 
@@ -128,6 +148,7 @@ export const updateParams = (partial: Partial<State>): void => {
     Object.values(MODES).includes(partial[PARAM_STRINGS.MODE])
       ? partial[PARAM_STRINGS.MODE]
       : currentState[PARAM_STRINGS.MODE];
+  const zoom = partial[PARAM_STRINGS.ZOOM] ?? currentState[PARAM_STRINGS.ZOOM];
 
   const minutes = Math.round(seconds / 60);
   const newState = {
@@ -135,6 +156,7 @@ export const updateParams = (partial: Partial<State>): void => {
     [PARAM_STRINGS.SALARY]: salary,
     [PARAM_STRINGS.TIME]: minutes,
     [PARAM_STRINGS.MODE]: mode,
+    [PARAM_STRINGS.ZOOM]: zoom ? 1 : 0,
   };
 
   const params = Object.entries(newState).map(

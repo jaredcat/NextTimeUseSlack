@@ -14,6 +14,7 @@ const defaultState: State = {
   [PARAM_STRINGS.SALARY]: DEFAULTS[PARAM_STRINGS.SALARY],
   [PARAM_STRINGS.TIME]: DEFAULTS[PARAM_STRINGS.TIME] * 60,
   [PARAM_STRINGS.MODE]: DEFAULTS[PARAM_STRINGS.MODE],
+  [PARAM_STRINGS.ZOOM]: DEFAULTS[PARAM_STRINGS.ZOOM],
 };
 
 const Home = (): ReactElement | null => {
@@ -25,6 +26,7 @@ const Home = (): ReactElement | null => {
   const [salary, setSalary] = useState(defaultState[PARAM_STRINGS.SALARY]);
   const [seconds, setSeconds] = useState(defaultState[PARAM_STRINGS.TIME]);
   const [mode, setMode] = useState<MODES>(defaultState[PARAM_STRINGS.MODE]);
+  const [zoomMode, setZoomMode] = useState(defaultState[PARAM_STRINGS.ZOOM]);
 
   useEffect(() => {
     const state = getStateFromParams();
@@ -32,6 +34,7 @@ const Home = (): ReactElement | null => {
     setSalary(state[PARAM_STRINGS.SALARY]);
     setSeconds(state[PARAM_STRINGS.TIME]);
     setMode(state[PARAM_STRINGS.MODE]);
+    setZoomMode(state[PARAM_STRINGS.ZOOM]);
     prevState.current = state;
     setIsReady(true);
     setIsLoaded(true);
@@ -42,6 +45,7 @@ const Home = (): ReactElement | null => {
       setSalary(nextState[PARAM_STRINGS.SALARY]);
       setSeconds(nextState[PARAM_STRINGS.TIME]);
       setMode(nextState[PARAM_STRINGS.MODE]);
+      setZoomMode(nextState[PARAM_STRINGS.ZOOM]);
       prevState.current = nextState;
     };
 
@@ -60,6 +64,7 @@ const Home = (): ReactElement | null => {
       [PARAM_STRINGS.SALARY]: salary,
       [PARAM_STRINGS.TIME]: seconds,
       [PARAM_STRINGS.MODE]: mode,
+      [PARAM_STRINGS.ZOOM]: zoomMode,
     };
 
     const updateState: Partial<State> = {};
@@ -75,13 +80,16 @@ const Home = (): ReactElement | null => {
     if (prevState.current[PARAM_STRINGS.MODE] !== mode) {
       updateState[PARAM_STRINGS.MODE] = mode;
     }
+    if (prevState.current[PARAM_STRINGS.ZOOM] !== zoomMode) {
+      updateState[PARAM_STRINGS.ZOOM] = zoomMode;
+    }
 
     if (Object.keys(updateState).length > 0) {
       updateParams(updateState);
     }
 
     prevState.current = currentState;
-  }, [people, salary, seconds, mode]);
+  }, [people, salary, seconds, mode, zoomMode]);
 
   const resetState = () => {
     setPeople(0);
@@ -105,6 +113,8 @@ const Home = (): ReactElement | null => {
       setSeconds={setSeconds}
       resetState={resetState}
       isLoaded={isLoaded}
+      zoomMode={zoomMode}
+      setZoomMode={setZoomMode}
     />
   );
 };
