@@ -5,8 +5,8 @@ import { globalStyles } from "../shared/styles";
 const title = "Next Time, Use Slack";
 const description =
   "Ever wonder how much a meeting 'costs'? Easily calculate the cost of a meeting or start a timer to watch how much money you're burning. Next time, let's just use slack instead.";
-const siteUrl = "https://nexttimeuseslack.com";
-const previewImage = "https://nexttimeuseslack.com/images/burn.jpg";
+const siteUrl = "https://jaredcat.github.io/NextTimeUseSlack";
+const previewImage = `${siteUrl}/images/burn.jpg`;
 const twitterHandle = "@xz3r0";
 const fbAdminId = "578412433";
 
