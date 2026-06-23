@@ -9,11 +9,15 @@ export const sizes = {
   lineHeight: "2rem",
   fontSize: "2rem",
   buttonFontSize: "1rem",
+  largeFontSize: "3rem",
+  heroFontSize: "4rem",
   small: {
     mediaQuery: "550px",
     lineHeight: "1.5rem",
     fontSize: "1.5rem",
-    buttonFontSize: "0.8rem",
+    buttonFontSize: "0.875rem",
+    largeFontSize: "2rem",
+    heroFontSize: "2.5rem",
   },
 };
 

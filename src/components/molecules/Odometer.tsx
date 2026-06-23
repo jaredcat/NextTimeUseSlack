@@ -1,12 +1,13 @@
 import { OdometerDigit, OdometerSymbol } from "@atoms";
+import { sizes } from "@constants";
 import styled from "@emotion/styled";
 import {
+  type ColumnSpin,
   DEFAULT_ODOMETER_DURATION_MS,
   getAnimationDuration,
   getColumnSpins,
   getCurrencyWheelPosition,
   getDigitsLeftToRightFromFormatted,
-  type ColumnSpin,
 } from "@shared/odometer";
 import { useEffect, useRef, useState } from "react";
 
@@ -25,6 +26,13 @@ interface OdometerProps {
 
 const OdometerFrame = styled.span`
   font-variant-numeric: tabular-nums;
+  max-width: 100%;
+
+  @media (max-width: ${sizes.small.mediaQuery}) {
+    display: inline-block;
+    overflow-x: auto;
+    vertical-align: bottom;
+  }
 `;
 
 const toUnits = (value: number, decimals: number): number =>
@@ -75,7 +83,7 @@ const Odometer = ({
     setDisplayValue(value);
     displayRef.current = value;
     setAnimationKey((key) => key + 1);
-  }, [value, duration, decimals, format, continuous]);
+  }, [value, decimals, format, continuous]);
 
   const shownValue = continuous ? value : displayValue;
   const formatted = format(shownValue);
@@ -99,11 +107,10 @@ const Odometer = ({
         digitPlace += 1;
         return (
           <OdometerDigit
-            animationKey={animationKey}
             continuous={continuous}
             digit={Number(char)}
             durationMs={animDurationMs}
-            key={`place-${digitPlace}`}
+            key={`place-${digitPlace}-${animationKey}`}
             spin={columnSpins[digitPlace] ?? idleSpin(Number(char))}
             wheelPosition={resolveWheelPosition(
               digitPlace,

@@ -1,4 +1,4 @@
-import { colors } from "@constants";
+import { colors, sizes } from "@constants";
 import styled from "@emotion/styled";
 import { func } from "prop-types";
 import { useState } from "react";
@@ -21,6 +21,14 @@ const Button = styled(a.button)`
   top: 0;
   transform-origin: center center;
   width: 50px;
+
+  @media (max-width: ${sizes.small.mediaQuery}) {
+    height: 44px;
+    margin: 0;
+    right: -0.25rem;
+    top: -2.75rem;
+    width: 44px;
+  }
 
   &:hover {
     background: rgba(255, 255, 255, 0.4);

@@ -1,4 +1,3 @@
-
 import Document, {
   type DocumentContext,
   type DocumentInitialProps,

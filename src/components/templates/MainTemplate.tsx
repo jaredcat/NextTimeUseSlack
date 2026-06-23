@@ -1,5 +1,5 @@
 import { DiscreetInput, TextRow } from "@atoms";
-import { MINS_A_YEAR, MODES, usdFormatter } from "@constants";
+import { MINS_A_YEAR, MODES, sizes, usdFormatter } from "@constants";
 import styled from "@emotion/styled";
 import { ResetButton, Trail } from "@molecules";
 import { Static, Timer } from "@organisms";
@@ -11,9 +11,16 @@ import { type ReactElement, useEffect, useState } from "react";
 const formatCurrency = (value: number): string => usdFormatter.format(value);
 
 const PageContent = styled.div<{ $minWidth: string }>`
+  box-sizing: border-box;
   max-width: 100%;
   min-width: ${({ $minWidth }) => $minWidth};
+  position: relative;
   width: max-content;
+
+  @media (max-width: ${sizes.small.mediaQuery}) {
+    min-width: 0;
+    width: 100%;
+  }
 `;
 
 interface MainProps {
@@ -47,11 +54,7 @@ const MainTemplate = ({
   const mins = Math.round(safeSeconds / 60);
   const burnMin = (safeSalary * safePeople) / MINS_A_YEAR;
   const burnTotal = (burnMin * safeSeconds) / 60;
-  const currencyChars = maxFormattedLength(
-    formatCurrency,
-    burnTotal,
-    burnMin,
-  );
+  const currencyChars = maxFormattedLength(formatCurrency, burnTotal, burnMin);
   // BURNS line uses 3rem type on a 2rem page; reserve width without exceeding the viewport.
   const pageMinWidth = `min(calc(${6 + Math.ceil(currencyChars * 1.6)}ch), calc(100vw - 2rem))`;
   const [contentOpen, setContentOpen] = useState(false);

@@ -1,4 +1,4 @@
-import { MODES } from "@constants";
+import type { MODES } from "@constants";
 import {
   DEFAULTS,
   getStateFromParams,

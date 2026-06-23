@@ -1,9 +1,8 @@
 import { DiscreetInput, TextButton, TextRow } from "@atoms";
 import { MODES, sizes, usdFormatter } from "@constants";
-import styled from "@emotion/styled";
 import { Odometer, Trail } from "@molecules";
 import { isValidNumber } from "@shared/params";
-import { HighlightedText } from "@shared/styles";
+import { HighlightedText, LargeText } from "@shared/styles";
 import { bool, func, number } from "prop-types";
 import type { ReactElement } from "react";
 
@@ -15,11 +14,6 @@ interface StaticProps {
   setMode(mode: string): void;
   contentOpen: boolean;
 }
-
-const LargeText = styled.span`
-  font-size: 3rem;
-  line-height: 3rem;
-`;
 
 const formatCurrency = (value: number): string => usdFormatter.format(value);
 

@@ -6,9 +6,15 @@ import {
   getTimeDigitWheelPosition,
 } from "@shared/odometer";
 import { isValidNumber } from "@shared/params";
-import { HighlightedText } from "@shared/styles";
+import { HeroText, HighlightedText } from "@shared/styles";
 import { bool, func, number } from "prop-types";
-import { type ReactElement, useEffect, useRef, useState } from "react";
+import {
+  type ReactElement,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 
 interface TimerProps {
   burnMin: number;
@@ -63,9 +69,9 @@ const Timer = ({
   totalBurnedRef.current = totalBurned;
   burnRateSecRef.current = burnRateSec;
 
-  const reanchorSmooth = () => {
+  const reanchorSmooth = useCallback(() => {
     const now = performance.now();
-    const rate = burnRateSecRef.current;
+    const rate = burnRateSec;
     const prevRate = prevBurnRateSecRef.current;
     const { startedAt, seconds: originSeconds } = smoothOriginRef.current;
 
@@ -95,10 +101,8 @@ const Timer = ({
     };
     prevBurnRateSecRef.current = rate;
     setDisplaySeconds(currentSeconds);
-    setTotalBurned(
-      rateChanged ? totalBurnedRef.current : targetTotal,
-    );
-  };
+    setTotalBurned(rateChanged ? totalBurnedRef.current : targetTotal);
+  }, [burnRateSec]);
 
   useEffect(() => {
     if (smooth) {
@@ -133,7 +137,7 @@ const Timer = ({
     }
 
     reanchorSmooth();
-  }, [burnRateSec, smooth]);
+  }, [reanchorSmooth, smooth]);
 
   useEffect(() => {
     if (!smooth) {
@@ -147,13 +151,11 @@ const Timer = ({
     }
 
     const tick = (now: number) => {
-      const elapsedSec =
-        (now - smoothOriginRef.current.startedAt) / 1000;
+      const elapsedSec = (now - smoothOriginRef.current.startedAt) / 1000;
       const rate = burnRateSecRef.current;
       const currentSeconds = smoothOriginRef.current.seconds + elapsedSec;
       const transition = totalTransitionRef.current;
-      let nextTotal =
-        smoothOriginRef.current.totalBurned + rate * elapsedSec;
+      let nextTotal = smoothOriginRef.current.totalBurned + rate * elapsedSec;
 
       if (transition) {
         const progress = Math.min(
@@ -163,8 +165,7 @@ const Timer = ({
         const eased = progress * (2 - progress);
         const repricedTotal = rate * currentSeconds;
         nextTotal =
-          transition.fromTotal +
-          (repricedTotal - transition.fromTotal) * eased;
+          transition.fromTotal + (repricedTotal - transition.fromTotal) * eased;
 
         if (progress >= 1) {
           totalTransitionRef.current = null;
@@ -246,13 +247,13 @@ const Timer = ({
         </HighlightedText>
       </TextRow>
       <TextRow>
-        <HighlightedText fontSize="4rem">
+        <HeroText>
           <Odometer
             continuous={smooth}
             format={formatCurrency}
             value={totalBurned}
           />
-        </HighlightedText>
+        </HeroText>
       </TextRow>
       <TextRow>HAS BEEN BURNT</TextRow>
       <TextButton

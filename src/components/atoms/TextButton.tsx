@@ -9,7 +9,15 @@ const Button = styled.button`
   cursor: pointer;
   display: inline-block;
   font-size: ${({ fontSize }: { fontSize?: string | null }) =>
-    fontSize || sizes.fontSize};
+    fontSize || sizes.buttonFontSize};
+  padding: 0.25rem 0;
+
+  @media (max-width: ${sizes.small.mediaQuery}) {
+    font-size: ${sizes.small.buttonFontSize};
+    min-height: 2.75rem;
+    padding: 0.5rem 0;
+    text-align: left;
+  }
 `;
 
 interface TextButtonProps {

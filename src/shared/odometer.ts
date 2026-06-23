@@ -63,9 +63,7 @@ export const getWheelPositions = (
   end: spin.fromDigit + (spin.increasing ? spin.steps : -spin.steps),
 });
 
-export const getAnimationDuration = (
-  columnSpins: ColumnSpin[],
-): number => {
+export const getAnimationDuration = (columnSpins: ColumnSpin[]): number => {
   const maxSteps = columnSpins.reduce(
     (max, column) => Math.max(max, column.steps),
     0,

@@ -30,9 +30,11 @@ export const globalStyles = (
         display: flex;
         justify-content: center;
         min-height: 100%;
+        overflow-x: hidden;
         padding: 1rem;
         @media (max-width: ${sizes.small.mediaQuery}) {
-          padding: 1rem 0.75rem;
+          align-items: flex-start;
+          padding: 3.5rem 0.75rem 1rem;
         }
       }
       #__next {
@@ -51,4 +53,24 @@ export const HighlightedText = styled.span`
   color: ${colors.highlighted};
   ${({ fontSize }: { fontSize?: string }) =>
     fontSize ? `font-size: ${fontSize};line-height:${fontSize};` : null}
+`;
+
+export const LargeText = styled.span`
+  font-size: ${sizes.largeFontSize};
+  line-height: ${sizes.largeFontSize};
+
+  @media (max-width: ${sizes.small.mediaQuery}) {
+    font-size: ${sizes.small.largeFontSize};
+    line-height: ${sizes.small.largeFontSize};
+  }
+`;
+
+export const HeroText = styled(HighlightedText)`
+  font-size: ${sizes.heroFontSize};
+  line-height: ${sizes.heroFontSize};
+
+  @media (max-width: ${sizes.small.mediaQuery}) {
+    font-size: ${sizes.small.heroFontSize};
+    line-height: ${sizes.small.heroFontSize};
+  }
 `;

@@ -1,8 +1,8 @@
 import styled from "@emotion/styled";
 import {
+  type ColumnSpin,
   getWheelFrame,
   getWheelPositions,
-  type ColumnSpin,
 } from "@shared/odometer";
 import { memo, useEffect, useRef, useState } from "react";
 
@@ -43,7 +43,6 @@ interface OdometerDigitProps {
   digit: number;
   spin: ColumnSpin;
   durationMs: number;
-  animationKey: number;
   continuous?: boolean;
   wheelPosition?: number;
 }
@@ -60,9 +59,9 @@ const WheelStrip = ({
       transform: `translateY(${-offsetEm}em)`,
     }}
   >
-    {lines.map((line, index) => (
-      <WheelLine key={`${line}-${index}`}>{line}</WheelLine>
-    ))}
+    <WheelLine key="above">{lines[0]}</WheelLine>
+    <WheelLine key="current">{lines[1]}</WheelLine>
+    <WheelLine key="below">{lines[2]}</WheelLine>
   </Wheel>
 );
 
@@ -71,7 +70,6 @@ const OdometerDigit = memo(
     digit,
     spin,
     durationMs,
-    animationKey,
     continuous = false,
     wheelPosition = 0,
   }: OdometerDigitProps): React.ReactElement => {
@@ -127,7 +125,7 @@ const OdometerDigit = memo(
           cancelAnimationFrame(rafRef.current);
         }
       };
-    }, [digit, spin, durationMs, animationKey, continuous]);
+    }, [digit, spin, durationMs, continuous]);
 
     if (continuous) {
       const frameState = getWheelFrame(wheelPosition);
